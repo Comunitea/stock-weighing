@@ -11,17 +11,17 @@ class StockPicking(models.Model):
     weighing_operations = fields.Boolean(related="picking_type_id.weighing_operations")
     has_weighing_operations = fields.Boolean(compute="_compute_has_weighing_operations")
 
-    @api.depends("move_lines")
+    @api.depends("move_ids")
     def _compute_has_weighing_operations(self):
         for picking in self:
-            picking.has_weighing_operations = picking.move_lines.filtered("has_weight")
+            picking.has_weighing_operations = picking.move_ids.filtered("has_weight")
 
     def action_weighing_operations(self):
         """Weighing operations for this picking"""
         action = self.env["ir.actions.actions"]._for_xml_id(
             "stock_weighing.weighing_operation_action"
         )
-        weight_moves = self.move_lines.filtered("has_weight")
+        weight_moves = self.move_ids.filtered("has_weight")
         action["name"] = _("Weighing operations for %(name)s", name=self.name)
         action["domain"] = [("id", "in", weight_moves.ids)]
         action["context"] = dict(

@@ -15,8 +15,8 @@ class StockMoveLine(models.Model):
     def _get_action_weighing_name(self):
         """Custom name to show in the wizard"""
         action_name = _(
-            "Weigh %(product_uom_qty)s %(uom)s of %(product)s",
-            product_uom_qty=self.product_uom_qty,
+            "Weigh %(reserved_uom_qty)s %(uom)s of %(product)s",
+            reserved_uom_qty=self.reserved_uom_qty,
             uom=self.product_uom_id.name,
             product=self.product_id.name,
         )

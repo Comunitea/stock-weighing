@@ -3,6 +3,7 @@
 from odoo import http
 from odoo.http import request
 
+
 class StockWeighing(http.Controller):
     @http.route("/stock_weighing/start_screen", auth="user", type="json")
     def stock_weighing_start_screen(self):

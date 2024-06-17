@@ -21,10 +21,10 @@ class StockMoveWeightWizard(models.TransientModel):
         comodel_name="product.product", related="move_id.product_id", store=True
     )
     available_lot_ids = fields.Many2many(
-        comodel_name="stock.production.lot", compute="_compute_available_lot_ids"
+        comodel_name="stock.lot", compute="_compute_available_lot_ids"
     )
     lot_id = fields.Many2one(
-        comodel_name="stock.production.lot", domain="[('id', 'in', available_lot_ids)]"
+        comodel_name="stock.lot", domain="[('id', 'in', available_lot_ids)]"
     )
     product_tracking = fields.Selection(related="product_id.tracking")
     selected_move_line_id = fields.Many2one(comodel_name="stock.move.line")
@@ -37,7 +37,7 @@ class StockMoveWeightWizard(models.TransientModel):
     def _compute_available_lot_ids(self):
         self.available_lot_ids = False
         for wiz in self.filtered(lambda x: x.product_id.tracking != "none"):
-            wiz.available_lot_ids = self.env["stock.production.lot"].search(
+            wiz.available_lot_ids = self.env["stock.lot"].search(
                 [("product_id", "=", wiz.product_id.id)],
                 order="create_date desc",
                 limit=5,
