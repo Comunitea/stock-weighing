@@ -1,18 +1,21 @@
 /** @odoo-module **/
 import { KanbanRenderer } from '@web/views/kanban/kanban_renderer';
 
-// export const WeightRecordingKanbanRenderer = KanbanRenderer.extend({
-//     config: _.extend({}, KanbanRenderer.prototype.config, {
-//         KanbanColumn: WeightRecordingKanbanColumn,
-//     }),
-// });
 export class WeightRecordingKanbanRenderer extends KanbanRenderer {
-    setup() {
-        super.setup();
-        debugger;
+    showWeighingPrintButton(group) {
+        return group.records.some((move) => {
+            return move.data.show_weighing_print_button;
+        });
     }
     groupPrintLabels(group) {
-        debugger;
+        const moves = group.list.records.filter((move) => {
+            return move.data.show_weighing_print_button;
+        });
+        return group.model.orm.call(
+            "stock.move", 
+            "action_print_weight_record_label", 
+            [moves.map((r) => r.resId)]);
+
     }
 }
 WeightRecordingKanbanRenderer.template = "stock_weighing.WeightRecordingKanbanRenderer";
