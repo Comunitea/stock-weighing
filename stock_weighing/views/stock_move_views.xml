@@ -198,7 +198,7 @@
                                             type="object"
                                             name="action_add_move_line"
                                             title="Add operation"
-                                            class="btn btn-lg btn-secondary ml-1 "
+                                            class="btn btn-lg btn-secondary ms-1 "
                                         >
                                             <i class="fa fa-plus" />
                                         </button>
@@ -207,7 +207,7 @@
                                             type="object"
                                             name="action_reset_weights"
                                             title="Reset weights"
-                                            class="btn btn-lg btn-secondary ml-1 "
+                                            class="btn btn-lg btn-secondary ms-1 "
                                             confirm="This will reset your current weight. Proceed?"
                                         >
                                             <i class="fa fa-times" />
@@ -217,7 +217,7 @@
                                             type="object"
                                             name="action_unlock_weigh_operation"
                                             title="Unlock weight operation"
-                                            class="btn btn-lg btn-danger ml-1 "
+                                            class="btn btn-lg btn-danger ms-1 "
                                         >
                                             <i class="fa fa-lock" />
                                         </button>

@@ -29,9 +29,7 @@
     "assets": {
         "web.assets_backend": [
             "stock_weighing/static/src/**/*.scss",
-            "stock_weighing/static/src/**/*.js",
-        ],
-        "web.assets_qweb": [
+            "stock_weighing/static/src/**/*.esm.js",
             "stock_weighing/static/src/**/*.xml",
         ],
     },

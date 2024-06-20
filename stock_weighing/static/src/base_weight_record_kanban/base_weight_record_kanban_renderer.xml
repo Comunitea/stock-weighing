@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates>
+    <!-- Esto es lo viejo -->
+    <!-- <t t-extend="KanbanView.Group" t-name="WeightRecordingKanbanView.Group">
+        <t t-jquery="span.o_column_title" t-operation="before">
+            <span t-if="!widget.folded" class="toggle_kanban_fold me-2">
+                <i
+                    class="fa fa-folder-open text-warning"
+                    role="img"
+                    aria-label="Fold"
+                    title="Fold"
+                />
+            </span>
+            <span t-else="">
+                <i
+                    class="fa fa-folder text-warning"
+                    role="img"
+                    aria-label="Unfold"
+                    title="Unfold"
+                />
+            </span>
+            <button
+                t-if="widget.show_weighing_print_button"
+                class="btn btn-lg btn-secondary me-2 column_print_labels"
+                title="Print labels"
+            >
+                <i class="fa fa-print" role="image" />
+            </button>
+        </t>
+        <t t-jquery=".o_column_unfold" t-operation="replace" />
+    </t> -->
+
+    <!-- El equivalente de lo anterior está en el renderer -->
+    <t 
+        t-name="stock_weighing.WeightRecordingKanbanRenderer" 
+        t-inherit="web.KanbanRenderer" 
+        t-inherit-mode="primary" 
+        owl="1"
+    >
+        <xpath expr="//span[hasclass('o_column_title')]" position="before">
+            <span t-if="!group.folded" class="toggle_kanban_fold me-2">
+                <i
+                    class="fa fa-folder-open text-warning"
+                    role="img"
+                    aria-label="Fold"
+                    title="Fold"
+                    t-on-click.stop="() => this.toggleGroup(group)"
+                />
+            </span>
+            <span t-else="">
+                <i
+                    class="fa fa-folder text-warning"
+                    role="img"
+                    aria-label="Unfold"
+                    title="Unfold"
+                    t-on-click.stop="() => this.toggleGroup(group)"
+                />
+            </span>
+            <button
+                t-if="group.show_weighing_print_button"
+                class="btn btn-lg btn-secondary me-2 column_print_labels"
+                title="Print labels"
+                t-on-click.stop="() => this.groupPrintLabels(group)"
+            >
+                <i class="fa fa-print" role="img" />
+            </button>
+        </xpath>
+        <xpath expr="//t[@t-if='env.isSmall or !group.isFolded']//Dropdown" position="replace">
+        </xpath>
+    </t>
+
+</templates>

@@ -99,7 +99,7 @@
                                             type="object"
                                             name="action_reset_weights"
                                             title="Reset weights"
-                                            class="btn btn-lg btn-secondary ml-1 "
+                                            class="btn btn-lg btn-secondary ms-1 "
                                             confirm="This will reset your current weight. Proceed?"
                                         >
                                             <i class="fa fa-times" />
