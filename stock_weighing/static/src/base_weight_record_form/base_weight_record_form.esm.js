@@ -1,18 +1,19 @@
 /** @odoo-module **/
 /* Copyright 2024 Tecnativa - David Vidal
  * License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl). */
-import ControlPanel from "web.ControlPanel";
-import FormView from "web.FormView";
-import viewRegistry from "web.view_registry";
+import {ControlPanel} from "@web/search/control_panel/control_panel";
+import {formView} from "@web/views/form/form_view";
+import {registry} from "@web/core/registry";
 
 export class WeightRecordingFormControlPanel extends ControlPanel {}
 WeightRecordingFormControlPanel.template = "WeightRecording.DetailControlPanel";
+WeightRecordingFormControlPanel.components = {...ControlPanel.components};
 
-export const WeightRecordingFormView = FormView.extend({
-    // We just want to avoid useless space for this form
-    config: _.extend({}, FormView.prototype.config, {
-        ControlPanel: WeightRecordingFormControlPanel,
-    }),
-});
 
-viewRegistry.add("base_weight_record_form", WeightRecordingFormView);
+export const WeightRecordingFormView = {
+    ...formView,
+    ControlPanel: WeightRecordingFormControlPanel,
+};
+
+registry.category("views").add("base_weight_record_form", WeightRecordingFormView);
+
