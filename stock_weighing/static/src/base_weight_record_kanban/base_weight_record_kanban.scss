@@ -92,7 +92,9 @@
     }
 }
 // Big input for the wizard
-input.o_input_weight {
+.o_input_weight {
     font-size: 3em;
     font-weight: bold;
+    border: 1px solid $border-color;
+    width: 100%;
 }

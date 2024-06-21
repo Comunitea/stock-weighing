@@ -11,17 +11,19 @@
                 <field name="product_tracking" invisible="1" />
                 <field name="available_lot_ids" invisible="1" />
                 <sheet>
-                    <field
-                        name="lot_id"
-                        class="form-control-lg"
-                        widget="selection"
-                        placeholder="Select lot..."
-                        attrs="{'invisible': ['|', ('wizard_state', '=', 'weight'), ('product_tracking', '=', 'none')]}"
-                    />
-                    <field
-                        name="weight"
-                        class="form-control-lg text-center text-info o_input_weight"
-                    />
+                    <div class="text-center">
+                        <field
+                            name="lot_id"
+                            class="form-control-lg"
+                            widget="selection"
+                            placeholder="Select lot..."
+                            attrs="{'invisible': ['|', ('wizard_state', '=', 'weight'), ('product_tracking', '=', 'none')]}"
+                        />
+                        <field
+                            name="weight"
+                            class="form-control-lg text-center text-info o_input_weight"
+                        />
+                    </div>
                     <footer>
                         <button
                             name="record_weight"

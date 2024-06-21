@@ -52,7 +52,7 @@
                             t-value="record.move_lines_count.raw_value === 1"
                         />
                         <div
-                            t-attf-class="{{record.weighing_state.raw_value &amp;&amp; 'oe_kanban_color_' + record.weighing_state.raw_value}} o_weight_kanban_card {{record.is_weighing_operation_locked.raw_value &amp;&amp; 'bg-light'}}"
+                            t-attf-class="{{record.weighing_state.raw_value &amp;&amp; 'oe_kanban_color_' + record.weighing_state.raw_value}} o_weight_kanban_card {{record.is_weighing_operation_locked.raw_value &amp;&amp; 'text-bg-light'}}"
                         >
                             <div class="o_kanban_detail_ungrouped row">
                                 <!-- Header infos -->
@@ -65,19 +65,19 @@
                                                 /></span>
                                         </t>
                                         <span
-                                            class="badge badge-light"
+                                            class="badge text-bg-light"
                                             title="Destination"
                                         >
                                             <t t-out="record.origin_names.value" />
                                             <i class="fa fa-arrow-right" />
                                             <t t-out="record.location_dest_id.value" />
                                         </span>
-                                        <span class="pull-right badge badge-light">
+                                        <span class="float-end badge text-bg-light">
                                             <field name="date" />
                                         </span>
                                         <span
                                             t-if="record.is_weighing_operation_locked.raw_value"
-                                            class="pull-right badge badge-danger"
+                                            class="float-endbadge text-bg-danger"
                                             title="Locked by user"
                                         >
                                             <i class="fa fa-lock" /> <field
@@ -93,7 +93,7 @@
                                     </strong>
                                     <div>
                                         <span
-                                            class="h4 badge badge-primary"
+                                            class="h4 badge text-bg-primary"
                                             t-out="record.reference.raw_value"
                                         />
                                         <em t-out="record.partner_id.value" />
@@ -153,15 +153,15 @@
                                     <t t-if="record.has_weight.raw_value">
                                         <span
                                             t-if="record.weighing_state.raw_value == 'weighed'"
-                                            class="badge badge-success w-100"
+                                            class="badge text-bg-success w-100"
                                         >Weighed</span>
                                         <span
                                             t-elif="record.weighing_state.raw_value == 'weighing'"
-                                            class="badge badge-warning w-100"
+                                            class="badge text-bg-warning w-100"
                                         >Weighing</span>
                                         <span
                                             t-elif="record.weighing_state.raw_value == 'to_weigh'"
-                                            class="badge badge-danger w-100"
+                                            class="badge text-bg-danger w-100"
                                         >To weigh</span>
                                         <div class="text-center">
                                             <t t-if="record.recorded_weight.raw_value">
@@ -240,7 +240,7 @@
                                 <div class="col-12">
                                     <div name="weight_card_footer">
                                         <span
-                                            class="badge badge-light"
+                                            class="badge text-bg-light"
                                             t-out="record.state.value"
                                         />
                                     </div>
