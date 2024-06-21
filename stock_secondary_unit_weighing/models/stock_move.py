@@ -8,6 +8,7 @@ class StockMove(models.Model):
 
     def action_add_move_line(self):
         action = super().action_add_move_line()
+        import ipdb; ipdb.set_trace()
         if self.secondary_uom_id:
             extra_info = (
                 f"[{self.secondary_uom_id.display_name} - {self.secondary_uom_qty}]"

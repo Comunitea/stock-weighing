@@ -1,3 +1,5 @@
 - [Tecnativa](https://www.tecnativa.com)
   - David Vidal
   - Sergio Teruel
+- [Communitea](https://www.comunitea.com)
+  - Javier Colmenero

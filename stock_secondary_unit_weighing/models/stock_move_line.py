@@ -13,6 +13,7 @@ class StockMoveLine(models.Model):
 
     def _get_action_weighing_name(self):
         """Add secondary unit info"""
+        import ipdb; ipdb.set_trace()
         action_name = super()._get_action_weighing_name()
         if self.secondary_uom_id:
             extra_info = (
