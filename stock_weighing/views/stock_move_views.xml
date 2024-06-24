@@ -68,9 +68,9 @@
                                             class="badge text-bg-light"
                                             title="Destination"
                                         >
-                                            <t t-out="record.origin_names.value" />
-                                            <i class="fa fa-arrow-right" />
-                                            <t t-out="record.location_dest_id.value" />
+                                            <t t-out="record.origin_names.value" /> 
+                                            <i class="fa fa-arrow-right mx-2" />
+                                            <t t-out="record.location_dest_id.value"/>
                                         </span>
                                         <span class="float-end badge text-bg-light">
                                             <field name="date" />
@@ -93,17 +93,17 @@
                                     </strong>
                                     <div>
                                         <span
-                                            class="h4 badge text-bg-primary"
+                                            class="h4 badge text-bg-primary me-2"
                                             t-out="record.reference.raw_value"
                                         />
                                         <em t-out="record.partner_id.value" />
                                     </div>
                                     <div>
-                                        <span class="text-warning"><strong
+                                        <span class="text-warning me-2"><strong
                                             >To do: </strong><field
                                                 name="product_uom_qty"
                                             /><field name="product_uom" /></span>
-                                        <span class="text-info"><strong
+                                        <span class="text-info me-2"><strong
                                             >Reserved: </strong><field
                                                 name="reserved_availability"
                                             /><field name="product_uom" /></span>

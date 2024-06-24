@@ -22,8 +22,8 @@
                                 <div class="col-12">
                                     <div>
                                         <span class="badge badge-light">
-                                            <t t-out="record.location_id.value" />
-                                            <i class="fa fa-arrow-right" title="to" />
+                                            <t t-out="record.location_id.value" /> 
+                                            <i class="fa fa-arrow-right" title="to" /> 
                                             <t t-out="record.location_dest_id.value" />
                                         </span>
                                     </div>
