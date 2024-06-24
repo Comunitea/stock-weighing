@@ -116,9 +116,7 @@
                                 <!-- Recording button -->
                                 <div class="col-1">
                                     <div
-                                        t-if="record.has_weight.raw_value &amp;&amp; !['done', 'cancel', 'draft'].includes(record.state.raw_value)"
-                                        class="row"
-                                    >
+                                        t-if="record.has_weight.raw_value &amp;&amp; !['done', 'cancel', 'draft'].includes(record.state.raw_value)">
                                         <button
                                             string="Record weight"
                                             name="action_weighing"
@@ -165,7 +163,7 @@
                                         >To weigh</span>
                                         <div class="text-center">
                                             <t t-if="record.recorded_weight.raw_value">
-                                                <span class="h1 text-success">
+                                                <span class="h1 text-success me-2">
                                                     <field name="recorded_weight" />
                                                 </span>
                                                 <sup class="initialism">
@@ -183,7 +181,6 @@
                                 </div>
                                 <!-- Extra buttons -->
                                 <div class="col-3">
-                                    <div class="row">
                                         <button
                                             t-if="record.show_weighing_print_button.raw_value"
                                             class="btn btn-lg btn-secondary"
@@ -221,7 +218,6 @@
                                         >
                                             <i class="fa fa-lock" />
                                         </button>
-                                    </div>
                                 </div>
                                 <!-- Details -->
                                 <div class="col-1">
