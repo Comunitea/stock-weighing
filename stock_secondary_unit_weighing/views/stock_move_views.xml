@@ -7,15 +7,13 @@
             <div name="weight_card_footer" position="inside">
                 <span
                     title="Secondary unit info"
-                    class="text-warning"
+                    class="ms-2 text-warning"
                     t-if="record.secondary_uom_id.raw_value"
                 >
                     <i class="fa fa-asterisk" />
                     <em>
                         <strong>
-                            <field name="secondary_uom_qty" />
-                            &amp;#10005;
-                            <field name="secondary_uom_id" />
+                            <field name="secondary_uom_qty" /> &#10005; <field name="secondary_uom_id" />
                         </strong>
                     </em>
                 </span>
