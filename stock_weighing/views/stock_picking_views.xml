@@ -18,4 +18,25 @@
             </div>
         </field>
     </record>
+
+    <record id="stock_picking_kanban" model="ir.ui.view">
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.stock_picking_kanban" />
+        <field name="arch" type="xml">
+            <field name="activity_state" position="after">
+                <field name="weighing_operations" invisible="1" />
+                <field name="has_weighing_operations" invisible="1" />
+            </field>
+           <xpath expr="//div[@class='o_kanban_record_bottom']" position="after">
+                <button
+                        name="action_weighing_operations"
+                        string="Weight"
+                        type="object"
+                        class="oe_highlight"
+                        icon="fa-thermometer-half "
+                        attrs="{'invisible': ['|', '|', ('weighing_operations', '=', False), ('has_weighing_operations', '=', False), ('state', 'in', ['draft', 'cancel'])]}"
+                    />
+           </xpath>
+        </field>
+    </record>
 </odoo>
