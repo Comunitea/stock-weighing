@@ -15,10 +15,13 @@
             .o_kanban_detail_ungrouped {
                 padding-left: $o-horizontal-padding - $o-kanban-color-border-width -
                     $o-kanban-record-margin;
-                > div {
-                    display: grid;
-                    align-items: center;
-                }
+                // In v15 div as grid, but inside a child div with row is used,
+                // to put it again like flex.
+                // This no make sense in v16. Better to be flex directly.
+                // > div {
+                //     display: grid;
+                //     align-items: center;
+                // }
                 .o_weight_kanban_image {
                     width: 56px;
                     height: 56px;
