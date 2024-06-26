@@ -62,7 +62,7 @@ class StockMoveWeightWizard(models.TransientModel):
         """New detailed operation from the kanban card"""
         vals = self.move_id._prepare_move_line_vals(quantity=self.weight)
         # Avoid filling the reserved quantities
-        vals.pop("product_uom_qty", None)
+        vals.pop("reserved_uom_qty", None)
         if self.lot_id:
             vals["lot_id"] = self.lot_id.id
         self._check_lot_creation()
