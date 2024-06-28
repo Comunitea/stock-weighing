@@ -93,6 +93,25 @@
             }
         }
     }
+    // Kanban card side colors
+    .oe_kanban_color_weighed {
+        border-left-color: $o-success;
+        &:after {
+            background-color: $o-success;
+        }
+    }
+    .oe_kanban_color_weighing {
+        border-left-color: $o-warning;
+        &:after {
+            background-color: $o-warning;
+        }
+    }
+    .oe_kanban_color_to_weigh {
+        border-left-color: $o-danger;
+        &:after {
+            background-color: $o-danger;
+        }
+    }
 }
 // Big input for the wizard
 .o_input_weight {

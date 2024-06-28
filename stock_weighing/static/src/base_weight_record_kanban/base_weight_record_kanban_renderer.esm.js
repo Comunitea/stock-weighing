@@ -3,6 +3,9 @@ import { KanbanRenderer } from '@web/views/kanban/kanban_renderer';
 
 export class WeightRecordingKanbanRenderer extends KanbanRenderer {
     showWeighingPrintButton(group) {
+        if (group.isFolded){
+            return false;
+        }
         return group.records.some((move) => {
             return move.data.show_weighing_print_button;
         });
