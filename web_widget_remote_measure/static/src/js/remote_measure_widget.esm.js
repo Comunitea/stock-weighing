@@ -6,6 +6,8 @@ import {_t} from "web.translation";
 import fieldRegistry from "web.field_registry";
 import session from "web.session";
 
+debugger;
+
 // Animate the measure steps for each measure received.
 export const nextState = {
     "fa-thermometer-empty": "fa-thermometer-quarter",

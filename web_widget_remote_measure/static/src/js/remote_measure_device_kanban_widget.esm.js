@@ -2,6 +2,9 @@
 import Widget from "web.Widget";
 import widgetRegistry from "web.widget_registry";
 
+
+debugger;
+
 const RemoteMeasureDeviceStatusWidget = Widget.extend({
     template: "web_widget_remote_measure.measure_device_status",
     xmlDependencies: [
