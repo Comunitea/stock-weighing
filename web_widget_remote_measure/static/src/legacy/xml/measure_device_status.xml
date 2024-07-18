@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<template>
+    <t t-name="web_widget_remote_measure.measure_device_status">
+        <div class="float-right" name="is_up">
+            <span
+                t-attf-class="fa fa-circle {{widget.className}}"
+                role="img"
+                aria-label="Host is up?"
+                t-attf-title="{{widget.title}}"
+                name="is_up"
+            >
+            </span>
+        </div>
+    </t>
+    <t t-name="web_widget_remote_measure.measure_device_status_owl" owl="1">
+        <div>
+            <!-- <ComponentAdapter 
+                Component="RemoteMeasure"
+                options="{'remote_device_field': 'remote_scale_id', 'uom_field': 'product_uom_id', 'default_user_device': True, 'allow_additive_measure': True}"
+                
+            /> -->
+            <RemoteMeasureAdapter 
+                Component="RemoteMeasure"
+                widgetArgs="options"
+               
+                
+            />
+            <!-- <RemoteMeasureAdapter 
+                Component="RemoteMeasure"
+                attrs="attrs" 
+            /> -->
+        </div>
+    </t>
+</template>
