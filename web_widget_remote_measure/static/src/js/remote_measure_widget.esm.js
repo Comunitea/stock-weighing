@@ -337,6 +337,7 @@ export const RemoteMeasure = FieldFloat.extend(RemoteMeasureMixin, {
      * Setup the field layout and the remote device parameters
      */
     init() {
+        debugger;
         this._super(...arguments);
         if (this.mode === "edit") {
             this.tagName = "div";
@@ -360,6 +361,7 @@ export const RemoteMeasure = FieldFloat.extend(RemoteMeasureMixin, {
      * Request the configured remote device info
      */
     async willStart() {
+        debugger;
         await this._super(...arguments);
         // Try to get the user's preferred device if any
         if (!this.remote_device_data && this.default_user_device) {
@@ -460,3 +462,216 @@ export const RemoteMeasure = FieldFloat.extend(RemoteMeasureMixin, {
 });
 
 fieldRegistry.add("remote_measure", RemoteMeasure);
+
+// import {FloatField} from "@web/views/fields/float/float_field";
+// import { _lt } from "@web/core/l10n/translation";
+// import { useService } from "@web/core/utils/hooks";
+// import { Component, useState, onWillStart, xml } from "@odoo/owl";
+// import { registry } from "@web/core/registry";
+
+// const nextState = {
+//     "fa-thermometer-empty": "fa-thermometer-quarter",
+//     "fa-thermometer-quarter": "fa-thermometer-half",
+//     "fa-thermometer-half": "fa-thermometer-three-quarters",
+//     "fa-thermometer-three-quarters": "fa-thermometer-full",
+//     "fa-thermometer-full": "fa-thermometer-empty",
+// };
+
+// export class RemoteMeasure extends FloatField {
+//     setup() {
+            
+//         this.state = useState({
+//             className: 'text-muted',
+//             title: 'Requesting status...',
+//             amount: 0,
+//             icon: 'fa-thermometer-empty',
+//             stream_success_counter: 10,
+//             stable: false,
+//         });
+        
+//         // this.session = useService('session');
+//         this.rpc = useService('rpc');
+//         this.host = this.props.host;
+//         this.protocol = this.props.protocol;
+//         this.connection_mode = this.props.connection_mode;
+//         this.uom = this.props.uom;
+//         this.device_uom = this.props.device_uom;
+//         this.uom_category = this.props.uom_category;
+//         this.device_uom_category = this.props.device_uom_category;
+//         this.allow_additive_measure = this.props.allow_additive_measure;
+//         this.input_val = this.props.input_val;
+        
+//         onWillStart(async () => {
+//             await this._fetchRemoteDeviceData();
+//         });
+//     }
+
+//     async _fetchRemoteDeviceData() {
+//         // Try to get the user's preferred device if any
+//         if (!this.remote_device_data && this.default_user_device) {
+//             [this.remote_device_data] = await this.rpc({
+//                 model: "res.users",
+//                 method: "read",
+//                 args: [this.session.uid, ["remote_measure_device_id"]],
+//             });
+//             if (!this.remote_device_data.remote_measure_device_id) {
+//                 return;
+//             }
+//             if (this.remote_device_data) {
+//                 this.remote_device_data.id = this.remote_device_data.remote_measure_device_id[0];
+//             }
+//         }
+//         if (!this.remote_device_data || !this.uom) {
+//             return;
+//         }
+//         [this.remote_device_data] = await this.rpc({
+//             model: "remote.measure.device",
+//             method: "read",
+//             args: [this.remote_device_data.id, []],
+//         });
+//         [this.uom] = await this.rpc({
+//             model: "uom.uom",
+//             method: "read",
+//             args: [this.uom.id, []],
+//         });
+//         this.uom_category = this.uom.category_id[0];
+//         this.device_uom_category = this.remote_device_data.uom_category_id[0];
+//         this.device_uom = this.remote_device_data.uom_id[0];
+//         this.host = this.remote_device_data && this.remote_device_data.host;
+//         this.protocol = this.remote_device_data && this.remote_device_data.protocol;
+//         this.connection_mode = this.remote_device_data && this.remote_device_data.connection_mode;
+//     }
+
+//     _processMsgF501(msg) {
+//         return {
+//             stable: msg[1] === "\x20",
+//             value: parseFloat(msg.slice(2, 10)),
+//         };
+//     }
+
+//     _connectToWebSockets() {
+//         try {
+//             this.socket = new WebSocket(this.host);
+//         } catch (error) {
+//             if (error.code === 18) {
+//                 return;
+//             }
+//             throw error;
+//         }
+//         this.socket.onmessage = async (msg) => {
+//             const data = await msg.data.text();
+//             const processed_data = this[`_processMsg${this.protocol}`](data);
+//             if (!processed_data.stable) {
+//                 this.state.stream_success_counter = 5;
+//             }
+//             if (processed_data.stable && !this.state.stream_success_counter) {
+//                 this._stableMeasure();
+//                 this._closeSocket();
+//                 this._awaitingMeasure();
+//                 this._recordMeasure();
+//                 return;
+//             }
+//             this._unstableMeasure();
+
+//             if (this.state.stream_success_counter) {
+//                 --this.state.stream_success_counter;
+//             }
+//             this.state.icon = this._nextStateIcon(this.state.icon);
+//             this.state.amount = processed_data.value;
+//             this._setMeasure();
+//         };
+//         this.socket.onerror = () => {
+//             this._awaitingMeasure();
+//         };
+//     }
+
+//     _nextStateIcon(icon) {
+//         const next_icon = nextState[icon];
+//         this.state.icon = next_icon;
+//         return next_icon;
+//     }
+
+//     _unstableMeasure() {
+//         this.state.stable = false;
+//     }
+
+//     _stableMeasure() {
+//         this.state.stable = true;
+//     }
+
+//     _awaitingMeasure() {
+//         this.state.stable = null;
+//     }
+
+//     _recordMeasure() {
+//         this.state.start_add = false;
+//         this.input_val = this.state.amount;
+//         this.state.start_add = false;
+//     }
+
+//     async _setMeasure() {
+//         if (isNaN(this.state.amount)) {
+//             return;
+//         }
+//         this.state.amount = this._computeQuantity(this.state.amount);
+//         if (this.state.start_add) {
+//             this.state.amount += this.input_val;
+//         }
+//         // Update your input field with the amount
+//     }
+
+//     _computeQuantity(amount) {
+//         if (this.uom.id === this.device_uom.id) {
+//             return amount;
+//         }
+//         let converted_amount = amount / this.remote_device_data.uom_factor;
+//         converted_amount *= this.uom.factor;
+//         return converted_amount;
+//     }
+
+//     _closeSocket() {
+//         if (this.socket) {
+//             this.socket.close();
+//         }
+//     }
+
+//     measure() {
+//         this.state.stop = false;
+//         this._connectToWebSockets();
+//     }
+
+//     measureStop() {
+//         this._closeSocket();
+//         this.state.stop = true;
+//         this._awaitingMeasure();
+//         this._recordMeasure();
+//     }
+
+//     _onMeasure(ev) {
+//         ev.preventDefault();
+//         this.measure();
+//     }
+
+//     _onMeasureAdd(ev) {
+//         ev.preventDefault();
+//         this.state.start_add = true;
+//         this.measure();
+//     }
+
+//     _onValidateMeasure(ev) {
+//         ev.preventDefault();
+//         this.measureStop();
+//     }
+
+//     static template = xml`
+//         <div>
+//             <button t-on-click="_onMeasure">Start Measure</button>
+//             <button t-on-click="_onMeasureAdd">Add Measure</button>
+//             <button t-on-click="_onValidateMeasure">Stop Measure</button>
+//             <span t-att-class="state.icon"></span>
+//             <input t-model="state.amount" />
+//         </div>
+//     `;
+// }
+
+// registry.category("fields").add("remote_measure", RemoteMeasure);
