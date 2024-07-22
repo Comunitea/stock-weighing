@@ -200,6 +200,9 @@ export class RemoteMeasureOwl extends FloatField {
             this.socket.close();
         }
     }
+    startMeasurement(){
+        this.connectToWebSocket();
+    }
 }
 
 RemoteMeasureOwl.template = "owl_measure_device_status";
