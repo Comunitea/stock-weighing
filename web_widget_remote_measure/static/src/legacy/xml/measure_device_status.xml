@@ -12,16 +12,16 @@
             </span>
         </div>
     </t>
-    <t t-name="web_widget_remote_measure.measure_device_status_owl" owl="1">
-        <div>
+    <!-- <t t-name="web_widget_remote_measure.measure_device_status_owl" owl="1">
+        <div> -->
             <!-- <ComponentAdapter 
                 Component="RemoteMeasure"
                 options="{'remote_device_field': 'remote_scale_id', 'uom_field': 'product_uom_id', 'default_user_device': True, 'allow_additive_measure': True}"
                 
             /> -->
-            <ComponentAdapter 
+            <!-- <ComponentAdapter 
                 Component="RemoteMeasure"                
-            />
+            /> -->
             <!-- <RemoteMeasureAdapter 
                 Component="RemoteMeasure"
                 widgetArgs="options"
@@ -32,6 +32,6 @@
                 Component="RemoteMeasure"
                 attrs="attrs" 
             /> -->
-        </div>
-    </t>
+        <!-- </div>
+    </t> -->
 </template>
