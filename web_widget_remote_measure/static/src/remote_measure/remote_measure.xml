@@ -1,0 +1,25 @@
+<!-- your_module/templates.xml -->
+<templates>
+    <t t-name="owl_measure_device_status" owl="1">
+        <div class="float-right" name="is_up">
+            <span
+                t-att-class="['fa', state.icon]"
+                role="img"
+                aria-label="Host is up?"
+                t-att-title="state.isStable ? 'Stable' : 'Unstable'"
+                name="is_up"
+            ></span>
+        </div>
+        <div>
+            <input
+                type="text"
+                t-att-value="state.amount"
+                t-att-placeholder="props.placeholder"
+            />
+        </div>
+        <div>
+            <button t-on-click="startMeasurement" t-if="!state.isMeasuring">Start</button>
+            <button t-on-click="stopMeasurement" t-if="state.isMeasuring">Stop</button>
+        </div>
+    </t>
+</templates>

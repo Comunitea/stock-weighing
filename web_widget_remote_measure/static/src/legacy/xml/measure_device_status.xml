@@ -19,12 +19,15 @@
                 options="{'remote_device_field': 'remote_scale_id', 'uom_field': 'product_uom_id', 'default_user_device': True, 'allow_additive_measure': True}"
                 
             /> -->
-            <RemoteMeasureAdapter 
+            <ComponentAdapter 
+                Component="RemoteMeasure"                
+            />
+            <!-- <RemoteMeasureAdapter 
                 Component="RemoteMeasure"
                 widgetArgs="options"
                
                 
-            />
+            /> -->
             <!-- <RemoteMeasureAdapter 
                 Component="RemoteMeasure"
                 attrs="attrs" 

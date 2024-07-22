@@ -459,53 +459,46 @@ export const RemoteMeasure = FieldFloat.extend(RemoteMeasureMixin, {
         this.$input.select();
     },
 });
-
 fieldRegistry.add("remote_measure", RemoteMeasure);
 
-import { ComponentAdapter } from "web.OwlCompatibility";
-import { Component, xml } from "@odoo/owl";
-import {FloatField} from "@web/views/fields/float/float_field";
-import {standardFieldProps} from "@web/views/fields/standard_field_props";
-import { LegacyComponent } from "@web/legacy/legacy_component";
+// INTENTO DE ADAPTAR WIDGET V1 (NO FUNCIONÓ)
 
 
-// import { _lt } from "@web/core/l10n/translation";
-// import { useService } from "@web/core/utils/hooks";
-// import { Component, useState, onWillStart, xml } from "@odoo/owl";
-// import { registry } from "@web/core/registry";
+// import { ComponentAdapter } from "web.OwlCompatibility";
+// import {FloatField} from "@web/views/fields/float/float_field";
+// import {standardFieldProps} from "@web/views/fields/standard_field_props";
+// import { LegacyComponent } from "@web/legacy/legacy_component";
+// import AbstractFieldOwl from 'web.AbstractFieldOwl';
 
 
-export class RemoteMeasureAdapter extends ComponentAdapter {
-    setup() {
-        debugger;
-        super.setup();
-        this.env = owl.Component.env;
-    }
+
+// export class RemoteMeasureAdapter extends ComponentAdapter {
+//     setup() {
+//         debugger;
+//         super.setup();
+//         this.env = owl.Component.env;
+//     }
     // async updateWidget() {
     //     /* eslint-disable no-empty-function */
     // }
     // async renderWidget() {
     //     /* eslint-disable no-empty-function */
     // }
-}
+// }
 
-export class RemoteMeasureOwl extends LegacyComponent {
-    // constructor() {
-    //     debugger;
-    //     super(...arguments);
-    //     this.RemoteMeasure = RemoteMeasure;
-    // }
-    setup() {
-        debugger;
-        this.RemoteMeasure = RemoteMeasure;
-        super.setup();
-    }
-}
-RemoteMeasureOwl.template = "web_widget_remote_measure.measure_device_status_owl";
+// export class RemoteMeasureOwl extends LegacyComponent {
+//     setup() {
+//         debugger;
+//         this.RemoteMeasure = RemoteMeasure;
+//         super.setup();
+//     }
+// }
+// RemoteMeasureOwl.template = "web_widget_remote_measure.measure_device_status_owl";
 // RemoteMeasureOwl.props = {
+//     ...AbstractFieldOwl.props,
 //     ...FloatField.props,
 // }
 // RemoteMeasureOwl.components = { ComponentAdapter };
-RemoteMeasureOwl.components = { RemoteMeasureAdapter };
 
-registry.category("fields").add("remote_measure", RemoteMeasureOwl);
+
+// registry.category("fields").add("remote_measure", RemoteMeasureOwl);

@@ -29,35 +29,4 @@ const RemoteMeasureDeviceStatusWidget = Widget.extend({
         };
     },
 });
-
 widgetRegistry.add("remote_measure_device_status", RemoteMeasureDeviceStatusWidget);
-
-// import { Component, useState, onWillStart } from "@odoo/owl";
-// import { registry } from "@web/core/registry";
-
-// class RemoteMeasureDeviceStatusWidget extends Component {
-//     setup() {
-//         this.state = useState({
-//             className: "text-muted",
-//             title: "Requesting status...",
-//         });
-//         this.host = this.props.host;
-
-//         onWillStart(async () => {
-//             const socket = new WebSocket(this.host);
-//             socket.onerror = () => {
-//                 this.state.className = "text-danger";
-//                 this.state.title = "Device is down";
-//             };
-//             socket.onmessage = () => {
-//                 socket.close();
-//                 this.state.className = "text-success";
-//                 this.state.title = "Device ready";
-//             };
-//         });
-//     }
-
-//     static template = "web_widget_remote_measure.measure_device_status";
-// }
-
-// registry.category("view_widgets").add("remote_measure_device_status", RemoteMeasureDeviceStatusWidget);
