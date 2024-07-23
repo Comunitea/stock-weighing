@@ -17,10 +17,11 @@ export class RemoteMeasureOwl extends FloatField {
         debugger;
         super.setup();
         this.state = useState({
-            amount: 0,
+            // amount: 0,
             icon: "fa-thermometer-empty",
             isStable: false,
             isMeasuring: false,
+            buttonClass: "btn-primary",
         });
 
         // Extraer las propiedades adicionales
@@ -59,7 +60,7 @@ export class RemoteMeasureOwl extends FloatField {
             }
 
             if (processedData.stable && !stream_success_counter) {
-                this.state.isStable = true;
+                this._stableMeasure();
                 this._setMeasure(processedData.value);
                 this._onValidateMeasure();
                 console.log("**** SALGO DE ONMESSAGE ****");
@@ -80,10 +81,20 @@ export class RemoteMeasureOwl extends FloatField {
             console.error('WebSocket error');
         };
     }
+    /**
+     * Once we consider the measure is stable render the button as green
+     */
+    _stableMeasure() {
+        console.log("**** _stableMeasure() ****");
+        this.state.isStable = true;
+        this.state.buttonClass = 'btn-success';
+
+    }
 
     _unstableMeasure() {
         console.log("**** _unstableMeasure() ****");
         this.state.isStable = false;
+        this.state.buttonClass = 'btn-danger';
     }
 
     _proccess_msg_f501(msg) {
@@ -124,9 +135,9 @@ export class RemoteMeasureOwl extends FloatField {
 
     _onMeasure() {
         console.log("**** _onMeasure() ****");
-        // if (this.props.mode !== 'edit') {
-        //     return;
-        // }
+        if (this.props.readonly) {
+            return;
+        }
         this.state.isMeasuring = true;
         this._connect_to_websockets();
     }
@@ -134,6 +145,7 @@ export class RemoteMeasureOwl extends FloatField {
     _onValidateMeasure() {
         console.log("**** _onValidateMeasure() ****");
         this.state.isMeasuring = false;
+        this.state.buttonClass = "btn-primary";
         this._closeSocket();
     }
 }
@@ -155,5 +167,7 @@ RemoteMeasureOwl.extractProps = ({ attrs }) => {
         uom_field: attrs.options.uom_field,
     };
 };
+// Equivalent to old widget classname
+RemoteMeasureOwl.additionalClasses = ["o_field_remote_device"];
 
 registry.category("fields").add("remote_measure", RemoteMeasureOwl);

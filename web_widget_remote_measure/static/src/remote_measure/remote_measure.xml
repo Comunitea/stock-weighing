@@ -1,72 +1,4 @@
-<!-- <templates>
-    <t t-name="owl_measure_device_status" owl="1">
-        <div class="float-right" name="is_up">
-            <span
-                t-att-class="['fa', state.icon]"
-                role="img"
-                aria-label="Host is up?"
-                t-att-title="state.isStable ? 'Stable' : 'Unstable'"
-                name="is_up"
-            ></span>
-        </div>
-        <div>
-            <input
-                type="text"
-                t-att-value="state.amount"
-                t-att-placeholder="props.placeholder"
-            />
-        </div>
-        <div>
-            <button t-on-click="_onMeasure" t-if="!state.isMeasuring">Start</button>
-            <button t-on-click="_onValidateMeasure" t-if="state.isMeasuring">Stop</button>
-        </div>
-    </t>
-</templates> -->
-
-<!-- <templates>
-    <t t-name="owl_measure_device_status" owl="1">
-        <div class="o_field_remote_device o_input">
-            <span 
-                t-att-class="['btn', state.isStable ? 'btn-success' : 'btn-danger']" 
-                t-on-click="_onMeasure">
-                <i t-att-class="['fa', state.icon]"></i>
-            </span>
-            <input
-                type="text"
-                t-att-value="state.amount"
-                t-att-placeholder="props.placeholder"
-                class="o_input"
-            />
-            <button 
-                t-on-click="_onValidateMeasure" 
-                t-if="state.isMeasuring" 
-                class="btn btn-secondary">
-                Stop
-            </button>
-        </div>
-    </t>
-</templates> -->
-
 <templates>
-    <!-- <t t-name="owl_measure_device_status" owl="1">
-        <div class="o_field_remote_device o_input">
-            <span class="btn btn-primary" t-on-click="_onMeasure">
-                <i t-att-class="'fa ' + state.icon"></i>
-            </span>
-            <input
-                type="text"
-                t-att-value="state.amount"
-                t-att-placeholder="props.placeholder"
-                class="o_input"
-            />
-            <span t-if="props.readonly" t-esc="formattedValue" />
-            <input t-else="" t-att-id="props.id" t-ref="numpadDecimal" autocomplete="off" t-att-placeholder="props.placeholder" t-att-type="props.inputType" inputmode="decimal" class="o_input" t-att-step="props.step" />
-            <button class="btn btn-secondary" t-on-click="_onValidateMeasure" t-if="state.isMeasuring">
-                Stop
-            </button>
-        </div>
-    </t> -->
-
     <!-- <t t-name="web.FloatField" owl="1">
         <span t-if="props.readonly" t-esc="formattedValue" />
         <input t-else="" t-att-id="props.id" t-ref="numpadDecimal" autocomplete="off" t-att-placeholder="props.placeholder" t-att-type="props.inputType" inputmode="decimal" class="o_input" t-att-step="props.step" />
@@ -74,20 +6,19 @@
 
     <t t-name="owl_measure_device_status" t-inherit="web.FloatField" t-inherit-mode="primary" owl="1">
         <xpath expr="//span" position="before">
-            <span 
+            <!-- <span 
                 t-if="!props.readonly" 
                 t-att-class="'btn ' + (state.isStable ? 'btn-success' : 'btn-danger')" 
                 t-on-click.prevent="toggleMeasurement">
                     <i t-att-class="'fa ' + state.icon"></i>
+            </span> -->
+            <span 
+                t-if="!props.readonly" 
+                t-att-class="'btn ' + state.buttonClass" 
+                t-on-click.prevent="toggleMeasurement">
+                    <i t-att-class="'fa ' + state.icon"></i>
             </span>
         </xpath>
-        <!-- <xpath expr="//span" position="before">
-            <span t-if="!props.readonly" t-att-class="'btn ' + (state.isStable ? 'btn-success' : 'btn-danger')" t-on-click="toggleMeasurement">
-                <i t-att-class="'fa ' + state.icon"></i>
-                <t t-if="state.isMeasuring">Stop</t>
-                <t t-else>Start</t>
-            </span>
-        </xpath> -->
     </t>
 </templates>
 
