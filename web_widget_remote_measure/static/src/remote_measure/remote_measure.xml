@@ -73,13 +73,12 @@
     </t> -->
 
     <t t-name="owl_measure_device_status" t-inherit="web.FloatField" t-inherit-mode="primary" owl="1">
-            <xpath expr="//span" position="before">
-                <!-- t-att-class="['btn', state.isStable ? 'btn-success' : 'btn-danger']"  -->
-                <span class="btn btn-primary" t-on-click="_onMeasure">
-                <i t-att-class="'fa ' + state.icon"></i>
+        <xpath expr="//span" position="before">
+            <span  t-if="!props.readonly" t-att-class="'btn ' + (state.isStable ? 'btn-success' : 'btn-danger')" t-on-click="_onMeasure">
+                    <i t-att-class="'fa ' + state.icon"></i>
             </span>
-            </xpath>
-        </t>
+        </xpath>
+    </t>
 </templates>
 
 

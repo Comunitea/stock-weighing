@@ -39,6 +39,7 @@ export const RemoteMeasureMixin = {
      * TODO: Abstract more the possible device scenarios
      */
     _connect_to_websockets() {
+        console.log("****_connect_to_websockets()****");
         try {
             this.socket = new WebSocket(this.host);
         } catch (error) {
@@ -51,6 +52,7 @@ export const RemoteMeasureMixin = {
         var icon = "fa-thermometer-empty";
         var stream_success_counter = 10;
         this.socket.onmessage = async (msg) => {
+            console.log("****_connect_to_websockets/onmessage()****");
             const data = await msg.data.text();
             const processed_data = this[`_proccess_msg_${this.protocol}`](data);
             if (!processed_data.stable) {
@@ -61,8 +63,10 @@ export const RemoteMeasureMixin = {
                 this._closeSocket();
                 this._awaitingMeasure();
                 this._recordMeasure();
+                console.log("****_SALGO onmessage()****");
                 return;
             }
+            console.log("stream_success_counter: ", stream_success_counter);
             this._unstableMeasure();
 
             if (stream_success_counter) {
@@ -460,45 +464,3 @@ export const RemoteMeasure = FieldFloat.extend(RemoteMeasureMixin, {
     },
 });
 fieldRegistry.add("remote_measure", RemoteMeasure);
-
-// INTENTO DE ADAPTAR WIDGET V1 (NO FUNCIONÓ)
-
-
-// import { ComponentAdapter } from "web.OwlCompatibility";
-// import {FloatField} from "@web/views/fields/float/float_field";
-// import {standardFieldProps} from "@web/views/fields/standard_field_props";
-// import { LegacyComponent } from "@web/legacy/legacy_component";
-// import AbstractFieldOwl from 'web.AbstractFieldOwl';
-
-
-
-// export class RemoteMeasureAdapter extends ComponentAdapter {
-//     setup() {
-//         debugger;
-//         super.setup();
-//         this.env = owl.Component.env;
-//     }
-    // async updateWidget() {
-    //     /* eslint-disable no-empty-function */
-    // }
-    // async renderWidget() {
-    //     /* eslint-disable no-empty-function */
-    // }
-// }
-
-// export class RemoteMeasureOwl extends LegacyComponent {
-//     setup() {
-//         debugger;
-//         this.RemoteMeasure = RemoteMeasure;
-//         super.setup();
-//     }
-// }
-// RemoteMeasureOwl.template = "web_widget_remote_measure.measure_device_status_owl";
-// RemoteMeasureOwl.props = {
-//     ...AbstractFieldOwl.props,
-//     ...FloatField.props,
-// }
-// RemoteMeasureOwl.components = { ComponentAdapter };
-
-
-// registry.category("fields").add("remote_measure", RemoteMeasureOwl);

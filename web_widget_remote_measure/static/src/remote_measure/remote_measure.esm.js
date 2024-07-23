@@ -23,7 +23,7 @@ export class RemoteMeasureOwl extends FloatField {
             isStable: false,
             isMeasurig: false,
         });
-        this.streamSuccessCounter = 10;
+        // this.streamSuccessCounter = 10;
 
         // Extraer las propiedades adicionales
         this.remoteDeviceField = this.props.remote_device_field;
@@ -31,16 +31,21 @@ export class RemoteMeasureOwl extends FloatField {
         this.uomField = this.props.uom_field;
 
         onMounted(() => {
-            this._connect_to_websockets();
+            debugger;
+            if (false){
+
+                this._connect_to_websockets();
+            }
         });
 
         onWillUnmount(() => {
+            debugger;
             this._closeSocket();
         });
     }
 
     _connect_to_websockets() {
-        // debugger;
+        console.log("**** _connect_to_websockets() ****");
         const host = "ws://localhost:8765";
         try {
             this.socket = new WebSocket(host);
@@ -51,31 +56,41 @@ export class RemoteMeasureOwl extends FloatField {
             }
             throw error;
         }
-
+        
+        var stream_success_counter = 10;
         this.socket.onmessage = async (msg) => {
-            // debugger;
+            console.log("**** onmessage() ****");
+            console.log("stream_success_counter: ", stream_success_counter);
             const data = await msg.data.text();
             const processedData = this._proccess_msg_f501(data);
 
             // Manejar la estabilidad de la medida
             if (!processedData.stable) {
-                this.streamSuccessCounter = 5;
+                // this.streamSuccessCounter = 5;
+                stream_success_counter = 5
             }
 
-            if (processedData.stable && this.streamSuccessCounter <= 0) {
+            // if (processedData.stable && this.streamSuccessCounter <= 0) {
+            if (processedData.stable && !stream_success_counter) {
                 this.state.isStable = true;
                 this._setMeasure(processedData.value);
                 this._closeSocket();
+                console.log("**** SALGO DE ONMESSAGE) ****");
                 return;
             } else {
-                this.state.isStable = false;
+                
             }
 
-            if (this.streamSuccessCounter > 0) {
-                this.streamSuccessCounter--;
-            }
+            this._unstableMeasure();
 
+            if (stream_success_counter) {
+                --stream_success_counter;
+            }
+            // icon = this._nextStateIcon(icon);
             this.state.icon = this._nextStateIcon(this.state.icon);
+            // this.amount = processed_data.value;
+            this._setMeasure(processedData.value);
+
         };
 
         this.socket.onerror = () => {
@@ -83,8 +98,12 @@ export class RemoteMeasureOwl extends FloatField {
         };
     }
 
+    _unstableMeasure() {
+        console.log("**** _unstableMeasure() ****");
+        this.state.isStable = false;
+    }
+
     _proccess_msg_f501(msg) {
-        debugger;
         // Implementar el procesamiento del mensaje según el protocolo
         // Aquí se asume un simple parseo del valor como ejemplo
         return {
@@ -94,25 +113,30 @@ export class RemoteMeasureOwl extends FloatField {
     }
 
     _nextStateIcon(currentIcon) {
+        console.log("**** _nextStateIcon(currentIcon) ****" + currentIcon);
         return nextState[currentIcon];
     }
 
     _setMeasure(value) {
+        console.log("**** _setMeasure(value) ****" + value);
         this.state.amount = value;
         this.props.update(this.state.amount);
     }
 
     _closeSocket() {
+        console.log("**** _closeSocket() ****");
         if (this.socket) {
             this.socket.close();
         }
     }
     _onMeasure() {
+        console.log("**** _onMeasure() ****");
         this.state.isMeasuring = true;
         this._connect_to_websockets();
     }
 
     _onValidateMeasure() {
+        console.log("**** _onValidateMeasure() ****");
         this.state.isMeasuring = false;
         this._closeSocket();
     }
