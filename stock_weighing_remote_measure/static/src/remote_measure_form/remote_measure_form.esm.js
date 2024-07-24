@@ -34,7 +34,7 @@ RemoteMeasureFormOwl.extractProps = ({ attrs }) => {
         tares: attrs.options.tares,
     };
 };
-RemoteMeasureOwl.additionalClasses = ["weight_wizard"];
-RemoteMeasureOwl.components = { RemoteMeasureOwl };
+RemoteMeasureFormOwl.additionalClasses = ["weight_wizard"];
+RemoteMeasureFormOwl.components = { RemoteMeasureOwl };
 
 registry.category("fields").add("remote_measure_form", RemoteMeasureFormOwl);
