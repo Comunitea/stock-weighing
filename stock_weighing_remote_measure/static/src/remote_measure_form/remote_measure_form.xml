@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<templates xml:space="preserve">
+    <t t-name="stock_weighing_remote_measure.RemoteMeasureFormOwl" t-inherit="web_widget_remote_measure.owl_measure_device_status" t-inherit-mode="primary" owl="1">
+       <!-- <xpath expr="//span[1]" position="before">
+            <h1>u</h1>
+        </div> -->
+    </t>
+
+</templates>

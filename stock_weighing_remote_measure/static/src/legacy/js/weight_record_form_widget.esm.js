@@ -1,12 +1,9 @@
 /** @odoo-module **/
 import {_t, qweb} from "web.core";
 import Dialog from "web.Dialog";
-import {RemoteMeasure} from "@web_widget_remote_measure/js/remote_measure_widget.esm";
+import {RemoteMeasure} from "@web_widget_remote_measure/legacy/js/remote_measure_widget.esm";
 import fieldRegistry from "web.field_registry";
 import session from "web.session";
-import { ComponentAdapter } from "@web/core/component_adapter";
-import { xml } from "@odoo/owl";
-
 
 export const RemoteMeasureForm = RemoteMeasure.extend({
     _template: "weigh_remote_measure.RemoteMeasureForm",
@@ -34,7 +31,6 @@ export const RemoteMeasureForm = RemoteMeasure.extend({
      * @override
      */
     init() {
-        debugger;
         this._super(...arguments);
         this.tares = this.nodeOptions.tares;
         this.tare = 0;
@@ -222,51 +218,6 @@ export const RemoteMeasureForm = RemoteMeasure.extend({
         this._changeTare(parseFloat(input.value));
     },
 });
-debugger;
 fieldRegistry.add("remote_measure_form", RemoteMeasureForm);
 
 
-
-class RemoteMeasureFormAdapter extends ComponentAdapter {
-    async willStart() {
-        await super.willStart();
-        this.Component = RemoteMeasureForm;
-        this.props = {
-            fieldName: this.props.fieldName,
-            record: this.props.record,
-            nodeOptions: this.props.nodeOptions,
-        };
-    }
-}
-
-RemoteMeasureFormAdapter.template = xml`
-    <div>
-        <!-- El widget heredado se montará aquí -->
-    </div>
-`;
-debugger;
-registry.category("fields").add("remote_measure_form", RemoteMeasureFormAdapter);
-
-
-
-
-
-
-
-// import {_t, qweb} from "web.core";
-// import Dialog from "web.Dialog";
-// import {FloatField} from "@web/views/fields/float/float_field";
-
-// import {RemoteMeasure} from "@web_widget_remote_measure/js/remote_measure_widget.esm";
-// import {registry} from "@web/core/registry";
-// // import fieldRegistry from "web.field_registry";
-// // import session from "web.session";
-
-// export class RemoteMeasureForm extends RemoteMeasure {
-//     setup() {
-//         debugger;
-//         super.setup();
-//     }
-// }
-// RemoteMeasureForm.template = "weigh_remote_measure.RemoteMeasureForm";
-// registry.category("fields").add("remote_measure_form", RemoteMeasureForm);

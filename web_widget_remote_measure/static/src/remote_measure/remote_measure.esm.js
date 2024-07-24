@@ -162,7 +162,6 @@ export class RemoteMeasureOwl extends FloatField {
          * Set value
          */
         async _setMeasure(amount) {
-            debugger;
             if (isNaN(amount)) {
                 return;
             }
