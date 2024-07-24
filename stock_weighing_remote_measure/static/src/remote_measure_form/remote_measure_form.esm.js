@@ -1,6 +1,4 @@
 /** @odoo-module **/
-
-debugger;
 import {registry} from "@web/core/registry";
 import { FloatField } from "@web/views/fields/float/float_field";
 
@@ -10,8 +8,18 @@ const RemoteMeasureOwl = registry.category("fields").get("remote_measure");
 
 class RemoteMeasureFormOwl extends RemoteMeasureOwl {
     setup() {
-        debugger;
         super.setup();
+        this.tares = this.props.tares;
+        this.tare = 0;
+        this.widget_amout = 69;
+        this.number_format_options = {
+            minimumFractionDigits: 3,
+            useGrouping: false,
+        };
+    }
+    get remoteMeasureProps() {
+        const {tares, inputType, ...result} = this.props;
+        return result;
     }
 }
 RemoteMeasureFormOwl.template = "stock_weighing_remote_measure.RemoteMeasureFormOwl";
@@ -26,5 +34,7 @@ RemoteMeasureFormOwl.extractProps = ({ attrs }) => {
         tares: attrs.options.tares,
     };
 };
-debugger;
+RemoteMeasureOwl.additionalClasses = ["weight_wizard"];
+RemoteMeasureOwl.components = { RemoteMeasureOwl };
+
 registry.category("fields").add("remote_measure_form", RemoteMeasureFormOwl);

@@ -97,11 +97,4 @@
             </div>
         </div>
     </t>
-    <!-- <t t-name="weigh_remote_measure.RemoteMeasureForm" owl="1">
-        <div class="container">
-            <div class="row">
-                <h1>eeeee</h1>
-            </div>
-        </div>
-    </t> -->
 </templates>
