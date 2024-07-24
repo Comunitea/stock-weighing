@@ -1,4 +1,6 @@
 <templates>
+
+    <!-- The original one  -->
     <!-- <t t-name="web.FloatField" owl="1">
         <span t-if="props.readonly" t-esc="formattedValue" />
         <input t-else="" t-att-id="props.id" t-ref="numpadDecimal" autocomplete="off" t-att-placeholder="props.placeholder" t-att-type="props.inputType" inputmode="decimal" class="o_input" t-att-step="props.step" />
@@ -6,17 +8,18 @@
 
     <t t-name="owl_measure_device_status" t-inherit="web.FloatField" t-inherit-mode="primary" owl="1">
         <xpath expr="//span" position="before">
-            <!-- <span 
-                t-if="!props.readonly" 
-                t-att-class="'btn ' + (state.isStable ? 'btn-success' : 'btn-danger')" 
-                t-on-click.prevent="toggleMeasurement">
-                    <i t-att-class="'fa ' + state.icon"></i>
-            </span> -->
+            <!-- t-att-class="'btn ' + (state.isStable ? 'btn-success' : 'btn-danger')"  -->
             <span 
                 t-if="!props.readonly" 
                 t-att-class="'btn ' + state.buttonClass" 
                 t-on-click.prevent="toggleMeasurement">
                     <i t-att-class="'fa ' + state.icon"></i>
+            </span>
+            <span 
+                t-if="!props.readonly" 
+                t-on-click.prevent="toggleMeasurement"
+                class="o_field_remote_device_start btn btn-link me-1">
+                <i class="fa fa-plus">
             </span>
         </xpath>
     </t>
