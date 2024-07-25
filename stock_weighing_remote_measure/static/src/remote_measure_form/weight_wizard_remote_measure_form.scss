@@ -10,6 +10,8 @@
         height: max-content;
         .o_input_weight {
             width: fit-content;
+            font-size: 1.3em !important;
+            border: 0 !important;
         }
         div[name="device_selector"] {
             cursor: pointer;

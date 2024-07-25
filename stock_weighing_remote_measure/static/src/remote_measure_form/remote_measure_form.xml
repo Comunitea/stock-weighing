@@ -12,26 +12,48 @@
                         t-if="tares.length"
                         class="ms-1 me-1 text-info text-start w-100"
                     >
-                        <i class="fa fa-level-down"></i> TARE: <span
-                            name="tare_amount"
-                            class="fw-bold text-danger"
-                        >0</span> <span t-out="uom_name" class="text-danger"></span>
-                        <i class="fa fa-caret-square-o-right"></i> REAL: <span
-                            name="real_amount"
-                            class="fw-bold text-success"
-                            t-out="amount"
-                        ></span> <span t-out="uom_name" class="text-success"></span>
+                        <i class="fa fa-level-down"></i> 
+                        TARE: 
+                        <span name="tare_amount" class="fw-bold text-danger me-1">0</span> 
+                        <span t-out="this.uom.name" class="text-danger me-2"></span>
+                        
+    
+                        <i class="fa fa-caret-square-o-right"></i> 
+                        REAL: 
+                        <span name="real_amount" class="fw-bold text-success me-1" t-out="amount"></span> 
+                        <span t-out="this.uom.name" class="text-success"></span>
+                        
+                        
                         <div
                             class="d-inline float-end text-dark"
                             title="Device info"
                             name="device_selector"
                             role="button"
                         >
-                            <i class="fa fa-thermometer"></i> <span t-out="device_name"></span>
+                            <i class="fa fa-thermometer"></i> 
+                            <span t-out="remote_device_data.name"></span>
                         </div>
                     </div>
+
+                    <!-- todo: Improve mt-4 in span button. Use flexbox and align itemns to emulate -->
                     <div name="weight_control" class="w-100">
-                        <RemoteMeasureOwl t-props="remoteMeasureProps"></RemoteMeasureOwl>
+                        <!-- <RemoteMeasureOwl t-props="remoteMeasureProps"></RemoteMeasureOwl> -->
+                        <span 
+                            t-if="!props.readonly" 
+                            t-att-class="'btn btn-lg float-start mt-4 ' + state.buttonClass" 
+                            t-on-click.prevent="toggleMeasurement">
+                                <i t-att-class="'fa ' + state.icon"></i>
+                        </span>
+                        <input 
+                            t-att-id="props.id" 
+                            t-ref="numpadDecimal" 
+                            autocomplete="off" 
+                            t-att-placeholder="props.placeholder" 
+                            t-att-type="props.inputType" 
+                            inputmode="decimal" 
+                            class="o_input o_input_weight text-info w-50" 
+                            t-att-step="props.step" 
+                        />
                     </div>
                 </div>
                 <t
