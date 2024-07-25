@@ -77,7 +77,7 @@
                         <btn t-attf-class="btn btn-{{color}} disabled">
                             <t t-if="tare.name" t-out="tare.name"></t>
                             <t t-else="">
-                                <t t-out="tare.tare"></t> <t t-out="uom_name"></t>
+                                <t t-out="tare.tare"></t> <t t-out="this.uom.name"></t>
                             </t>
                         </btn>
                         <btn
@@ -112,7 +112,7 @@
                             type="button"
                             data-mode="minus"
                         ></button>
-                        <span class="input-group-text" t-out="uom_name"></span>
+                        <span class="input-group-text" t-out="this.uom.name"></span>
                     </div>
                 </div>
             </div>
