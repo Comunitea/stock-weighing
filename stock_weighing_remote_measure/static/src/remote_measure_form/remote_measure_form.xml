@@ -14,13 +14,13 @@
                     >
                         <i class="fa fa-level-down"></i> 
                         TARE: 
-                        <span name="tare_amount" class="fw-bold text-danger me-1">0</span> 
+                        <span t-out="this.state.tare" name="tare_amount"  class="fw-bold text-danger me-1">0</span> 
                         <span t-out="this.uom.name" class="text-danger me-2"></span>
                         
     
                         <i class="fa fa-caret-square-o-right"></i> 
                         REAL: 
-                        <span name="real_amount" class="fw-bold text-success me-1" t-out="amount"></span> 
+                        <span name="real_amount" class="fw-bold text-success me-1" t-out="this.state.real_amount"></span> 
                         <span t-out="this.uom.name" class="text-success"></span>
                         
                         
@@ -71,6 +71,7 @@
                         <btn
                             t-attf-class="btn btn-outline-{{color}}"
                             t-att-data-tare="tare.tare"
+                            t-on-click="_onClickTare"
                         >
                             -
                         </btn>
@@ -83,6 +84,7 @@
                         <btn
                             t-attf-class="btn btn-outline-{{color}}"
                             t-attf-data-tare="-{{tare.tare}}"
+                            t-on-click="_onClickTare"
                         >
                             +
                         </btn>
