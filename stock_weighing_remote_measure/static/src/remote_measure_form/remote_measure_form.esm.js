@@ -161,8 +161,11 @@ RemoteMeasureFormOwl.props = {
     ...RemoteMeasureOwl.props,
     tares: { type: Object, optional: true },
 };
-RemoteMeasureFormOwl.extractProps = ({ attrs }) => {
+
+const superExtractProps = RemoteMeasureOwl.extractProps;
+RemoteMeasureOwl.extractProps = ({ attrs, field }) => {
     return {
+        ...superExtractProps({attrs, field}),  // Geting Digits Precission
         remote_device_field: attrs.options.remote_device_field,
         uom_field: attrs.options.uom_field,
         tares: attrs.options.tares,

@@ -1,7 +1,6 @@
 /** @odoo-module **/
 import { FloatField } from "@web/views/fields/float/float_field";
 import { registry } from "@web/core/registry";
-import { standardFieldProps } from "@web/views/fields/standard_field_props";
 
 import { useService } from '@web/core/utils/hooks';
 import { session } from "@web/session";
@@ -309,21 +308,18 @@ RemoteMeasureOwl.template = "owl_measure_device_status";
 
 // Define solo las nuevas propiedades necesarias
 RemoteMeasureOwl.props = {
-    ...standardFieldProps,
-    // inputType: {type: String, optional: true},
+    ...FloatField.props,
     remote_device_field: { type: String, optional: true },
     default_user_device: { type: Boolean, optional: true },
     uom_field: { type: String, optional: true },
     allow_additive_measure: { type: Boolean, optional: true },
-    // digits: { type: Array, optional: true },
 };
-// RemoteMeasureOwl.supportedTypes = ["float"];
-// RemoteMeasureOwl.defaultProps = {
-//     inputType: "text",
-// };
+RemoteMeasureOwl.supportedTypes = ["float"];
 
-RemoteMeasureOwl.extractProps = ({ attrs }) => {
+const superExtractProps = FloatField.extractProps;
+RemoteMeasureOwl.extractProps = ({ attrs, field }) => {
     return {
+        ...superExtractProps({attrs, field}),  // Geting Digits Precission
         remote_device_field: attrs.options.remote_device_field,
         default_user_device: attrs.options.default_user_device,
         uom_field: attrs.options.uom_field,
