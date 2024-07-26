@@ -52,7 +52,7 @@ export class RemoteMeasureOwl extends FloatField {
         });
 
         onMounted(() => {
-            if (this.remote_device_data.instant_read) {
+            if (this.remote_device_data && this.remote_device_data.instant_read) {
                 this.measure();
             }
         });
