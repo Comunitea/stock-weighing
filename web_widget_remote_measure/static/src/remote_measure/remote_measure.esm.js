@@ -129,7 +129,8 @@ export class RemoteMeasureOwl extends FloatField {
             }
 
             this.state.icon = this._nextStateIcon(this.state.icon);
-            this._setMeasure(processedData.value);
+            this.amount = processedData.value;
+            this._setMeasure();
             this._recordMeasure(processedData.value);
         };
 
@@ -150,30 +151,31 @@ export class RemoteMeasureOwl extends FloatField {
      * @param {Number} amount
      * @returns {Number} converted amount
      */
-        _compute_quantity(amount) {
-            if (this.uom.id === this.device_uom.id) {
-                return amount;
-            }
-            let converted_amount = amount / this.remote_device_data.uom_factor;
-            converted_amount *= this.uom.factor;
-            return converted_amount;
+    _compute_quantity(amount) {
+        if (this.uom.id === this.device_uom.id) {
+            return amount;
         }
-        /**
-         * Set value
-         */
-        async _setMeasure(amount) {
-            if (isNaN(amount)) {
-                return;
-            }
-            this.amount = this._compute_quantity(amount);
-            if (this.start_add) {
-                this.amount += this.props.val;
-            }
-            // this.$input.val(this.amount.toLocaleString(this.locale_code));
+        let converted_amount = amount / this.remote_device_data.uom_factor;
+        converted_amount *= this.uom.factor;
+        return converted_amount;
+    }
+    /**
+     * Set value
+     */
+    async _setMeasure() {
 
-            // this._setValue(this.$input.val());
-            this.props.update(this.amount);
+        if (isNaN(this.amount)) {
+            return;
         }
+        // this.amount = this._compute_quantity(amount);
+        if (this.start_add) {
+            this.amount += this.props.val;
+        }
+        // this.$input.val(this.amount.toLocaleString(this.locale_code));
+
+        // this._setValue(this.$input.val());
+        this.props.update(this.amount);
+    }
 
     /**
      * While the widget isn't querying it will be purple as a signal that we can start
@@ -303,11 +305,17 @@ RemoteMeasureOwl.template = "owl_measure_device_status";
 // Define solo las nuevas propiedades necesarias
 RemoteMeasureOwl.props = {
     ...standardFieldProps,
+    // inputType: {type: String, optional: true},
     remote_device_field: { type: String, optional: true },
     default_user_device: { type: Boolean, optional: true },
     uom_field: { type: String, optional: true },
     allow_additive_measure: { type: Boolean, optional: true },
+    // digits: { type: Array, optional: true },
 };
+// RemoteMeasureOwl.supportedTypes = ["float"];
+// RemoteMeasureOwl.defaultProps = {
+//     inputType: "text",
+// };
 
 RemoteMeasureOwl.extractProps = ({ attrs }) => {
     return {
