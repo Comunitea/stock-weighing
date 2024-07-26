@@ -49,7 +49,7 @@ class RemoteMeasureFormOwl extends RemoteMeasureOwl {
         if (this.tare) {
             total = this.amount - this.tare;
         }
-        this.amount = this._compute_quantity(total);
+        // this.amount = this._compute_quantity(total);
         // this.amount = this.format_weight(total)
         // if (this.start_add) {
         //     this.amount += this.props.val;
