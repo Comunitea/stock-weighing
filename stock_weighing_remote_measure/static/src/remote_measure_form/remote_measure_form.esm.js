@@ -163,7 +163,7 @@ RemoteMeasureFormOwl.props = {
 };
 
 const superExtractProps = RemoteMeasureOwl.extractProps;
-RemoteMeasureOwl.extractProps = ({ attrs, field }) => {
+RemoteMeasureFormOwl.extractProps = ({ attrs, field }) => {
     return {
         ...superExtractProps({attrs, field}),  // Geting Digits Precission
         remote_device_field: attrs.options.remote_device_field,
