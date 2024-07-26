@@ -1,0 +1,1 @@
+- Improve new OWL code style
