@@ -62,11 +62,21 @@ export class RemoteMeasureOwl extends FloatField {
         });
     }
 
+    setRemoteDeviceData(deviceData){
+        this.remote_device_data = deviceData;
+        this.device_uom_category = this.remote_device_data.uom_category_id[0];
+        this.device_uom = this.remote_device_data.uom_id[0];
+        this.host = this.remote_device_data && this.remote_device_data.host;
+        this.protocol = this.remote_device_data && this.remote_device_data.protocol;
+        this.connection_mode =
+            this.remote_device_data && this.remote_device_data.connection_mode;
+    }
+
     async loadRemoteDeviceData() {
         console.log("**** loadRemoteDeviceData() ****");
         const [userData] = await this.orm.read(
             "res.users", [session.uid], ["remote_measure_device_id"]);
-        this.renote_device_data = userData;
+        this.remote_device_data = userData;
         if (!userData.remote_measure_device_id) {
             return;
         }
@@ -75,16 +85,11 @@ export class RemoteMeasureOwl extends FloatField {
     
         const [deviceData] = await this.orm.read("remote.measure.device", [deviceId], []);   
         const [uomData] = await this.orm.read("uom.uom", [deviceData.uom_id[0]], []);
-    
-        this.remote_device_data = deviceData;
+        
+        this.setRemoteDeviceData(deviceData);
+        
         this.uom = uomData;
         this.uom_category = this.uom.category_id[0];
-        this.device_uom_category = this.remote_device_data.uom_category_id[0];
-        this.device_uom = this.remote_device_data.uom_id[0];
-        this.host = this.remote_device_data && this.remote_device_data.host;
-        this.protocol = this.remote_device_data && this.remote_device_data.protocol;
-        this.connection_mode =
-            this.remote_device_data && this.remote_device_data.connection_mode;
         console.log("@@@@@@@@@@@@@@@@@@@this@@@@@@@@@@@@@@@@@@@");
         console.log(this);
     }

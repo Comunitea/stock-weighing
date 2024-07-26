@@ -340,7 +340,6 @@ export const RemoteMeasure = FieldFloat.extend(RemoteMeasureMixin, {
      * Setup the field layout and the remote device parameters
      */
     init() {
-        debugger;
         this._super(...arguments);
         if (this.mode === "edit") {
             this.tagName = "div";
@@ -364,7 +363,6 @@ export const RemoteMeasure = FieldFloat.extend(RemoteMeasureMixin, {
      * Request the configured remote device info
      */
     async willStart() {
-        debugger;
         await this._super(...arguments);
         // Try to get the user's preferred device if any
         if (!this.remote_device_data && this.default_user_device) {

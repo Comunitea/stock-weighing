@@ -29,15 +29,15 @@
                             title="Device info"
                             name="device_selector"
                             role="button"
+                            t-on-click="_onDeviceSelector"
                         >
                             <i class="fa fa-thermometer"></i> 
-                            <span t-out="remote_device_data.name"></span>
+                            <span t-out="this.state.remote_device_name"></span>
                         </div>
                     </div>
 
                     <!-- todo: Improve mt-4 in span button. Use flexbox and align itemns to emulate -->
                     <div name="weight_control" class="w-100">
-                        <!-- <RemoteMeasureOwl t-props="remoteMeasureProps"></RemoteMeasureOwl> -->
                         <span 
                             t-if="!props.readonly" 
                             t-att-class="'btn btn-lg float-start mt-4 ' + state.buttonClass" 
@@ -125,8 +125,22 @@
                     </div>
                 </div>
             </div>
+                     
+            <Dialog t-if="this.state.show_dialog" title="'Select Device'" size="'sm'">
+                <div class="modal-body">
+                    <div t-foreach="remote_devices" t-as="device" t-key="device_index"
+                        
+                        >
+                        <button class="btn btn-dark btn-lg btn-block mb-2 w-100" t-on-click="_onSelectDevice" t-att-data-device_id="device.id">
+                            <t t-out="device.name"/>
+                        </button>
+                    <div/>
+                </div>
+                <t t-set-slot="footer">
+                    <button class="btn btn-lg btn-light btn-block" t-on-click="() => this.state.show_dialog = false">Discard</button>
+                </t>
+            </Dialog>
         </div>
-
     </t>
 
 </templates>

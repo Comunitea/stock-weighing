@@ -2,6 +2,8 @@
 import {registry} from "@web/core/registry";
 import { FloatField } from "@web/views/fields/float/float_field";
 const { useState } = owl;
+import { Dialog } from "@web/core/dialog/dialog";
+
 
 // import {RemoteMeasureOwl} from "@web_widget_remote_measure/remote_measure/remote_measure";
 const RemoteMeasureOwl = registry.category("fields").get("remote_measure");
@@ -12,8 +14,8 @@ class RemoteMeasureFormOwl extends RemoteMeasureOwl {
         super.setup();
         this.tares = this.props.tares;
         this.tare = 0;
-        debugger;
         this.amount = this.props.value;
+        this.remote_devices = [];
         this.number_format_options = {
             minimumFractionDigits: 3,
             useGrouping: false,
@@ -22,13 +24,49 @@ class RemoteMeasureFormOwl extends RemoteMeasureOwl {
             ...this.state,
             tare: 0,
             real_amount: 0,
-            manual_tare: 0
+            manual_tare: 0,
+            show_dialog: false,
+            remote_device_name: "" 
         });
     }
     // get remoteMeasureProps() {
     //     const {tares, inputType, ...result} = this.props;
     //     return result;
     // }
+
+    setRemoteDeviceData(deviceData){
+        super.setRemoteDeviceData(deviceData)
+        this.state.remote_device_name = this.remote_device_data.name;
+    }
+
+    async readDevices() {
+        console.log("**** loadRemoteDeviceData() ****");
+        // const [userData] = await this.orm.read(
+        //     "res.users", [session.uid], ["remote_measure_device_id"]);
+        const result = await this.orm.searchRead(
+                "remote.measure.device",
+                [],
+                ["id", "name"],
+                {}
+        );
+        console.log("**** loadRemoteDeviceData() ****", result);
+        this.remote_devices = result;
+    }
+
+    async _onDeviceSelector(ev) {
+        ev.preventDefault();
+        await this.readDevices();
+        this.state.show_dialog = true;
+    }
+
+    async _onSelectDevice(ev) {
+        ev.preventDefault();
+        const deviceId = parseInt(ev.currentTarget.dataset.device_id);
+        const [newdDeviceData] = await this.orm.read("remote.measure.device", [deviceId], []);   
+        this.setRemoteDeviceData(newdDeviceData);
+        this.state.show_dialog = false
+    }
+
 
     /**
      * Number formatting helper
@@ -58,7 +96,6 @@ class RemoteMeasureFormOwl extends RemoteMeasureOwl {
 
         // this._setValue(this.$input.val());
         // this.props.update(this.amount);
-        debugger;
         this.props.update(total);
     }
 
@@ -68,7 +105,6 @@ class RemoteMeasureFormOwl extends RemoteMeasureOwl {
     _updateTare() {
         // this.$tare_amount.text(this.format_weight(this.tare));
         // this.$real_amount.text(this.format_weight(this.amount));
-        debugger;
         this.state.tare = this.format_weight(this.tare);
         // this._setMeasure(this.amount);
         this._setMeasure(this.props.value);
@@ -133,5 +169,6 @@ RemoteMeasureFormOwl.extractProps = ({ attrs }) => {
     };
 };
 RemoteMeasureFormOwl.additionalClasses = ["weight_wizard"];
+RemoteMeasureFormOwl.components = { Dialog };
 
 registry.category("fields").add("remote_measure_form", RemoteMeasureFormOwl);

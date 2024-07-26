@@ -2,10 +2,8 @@
 import {RemoteMeasureOwl} from "@web_widget_remote_measure/remote_measure/remote_measure.esm";
 import {patch} from "@web/core/utils/patch";
 
-debugger;
 patch(RemoteMeasureOwl.prototype, "RemoteMeasureOwl_add_SSCAR", {
     setup() {
-        debugger;
         this._super(...arguments);
     },
     /**
@@ -69,7 +67,7 @@ patch(RemoteMeasureOwl.prototype, "RemoteMeasureOwl_add_SSCAR", {
     // },
 
     _proccess_msg_sscar(msg) {
-        console.log("**** _proccess_msg_SSCAR() ****");
+        console.log("****FAKING FSR53: _proccess_msg_SSCAR() ****");
         return {
             stable: msg[1] === "\x20",
             value: parseFloat(msg.slice(2, 10)),
