@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<templates xml:space="preserve">
+
+    <t t-inherit="stock_weighing_remote_measure.RemoteMeasureFormOwl" t-inherit-mode="extension" owl="1">
+        <xpath expr="//div[@name='buttons']" position="after">
+            <t
+                t-set="sscar_buttons"
+                t-value="['T', 'X', 'Z']"
+            />
+            <div class="col-12 pt-2 ps-0" name="buttons">
+                <div
+                    t-foreach="sscar_buttons"
+                    t-as="button"
+                    t-key="button_index"
+                    class="btn-group btn-group-lg me-2 mb-2 float-start"
+                >
+                    <btn
+                        t-attf-class="btn btn-primary"
+                        t-att-data-name="button"
+                        t-on-click="_onClickButtonSscar"
+                    >
+                        <t t-out="button"></t>
+                    </btn>
+                </div>
+            </div>
+        </xpath>
+    </t>
+
+</templates>

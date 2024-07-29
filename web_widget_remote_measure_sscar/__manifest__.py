@@ -16,9 +16,15 @@
     "data": [],
     "assets": {
         "web.assets_backend": [
-            "web_widget_remote_measure_sscar/static/src/**/*.esm.js",
-            "web_widget_remote_measure_sscar/static/src/**/*.scss",
-            "web_widget_remote_measure_sscar/static/src/**/*.xml"
+            'web_widget_remote_measure_sscar/static/src/**/*.esm.js',
+            'web_widget_remote_measure_sscar/static/src/**/*.scss',
+            'web_widget_remote_measure_sscar/static/src/**/*.xml',
         ],
+        # "web.assets_backend": [
+            
+        #     ('after', 'stock_weighing_remote_measure/static/src/remote_measure_form/remote_measure_form.esm.js', 'web_widget_remote_measure_sscar/static/src/remote_measure/remote_measure_form.esm.js'),
+        #     'web_widget_remote_measure_sscar/static/src/**/*.scss',
+        #     'web_widget_remote_measure_sscar/static/src/**/*.xml',
+        # ],
     },
 }

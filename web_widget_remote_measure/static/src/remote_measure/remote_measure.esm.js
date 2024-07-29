@@ -103,7 +103,6 @@ export class RemoteMeasureOwl extends FloatField {
             }
             throw error;
         }
-
         var stream_success_counter = 10;
         this.socket.onmessage = async (msg) => {
             console.log("**** onmessage() ****");
@@ -112,12 +111,13 @@ export class RemoteMeasureOwl extends FloatField {
 
             // process data from variable protocol
             const processedData = this[`_proccess_msg_${this.protocol}`](data);
-
+            console.log("processedData: ", processedData);
             if (!processedData.stable) {
                 stream_success_counter = 5;
             }
 
             if (processedData.stable && !stream_success_counter) {
+                debugger;
                 this._stableMeasure();
                 this._closeSocket();
                 this._awaitingMeasure();
@@ -266,7 +266,6 @@ export class RemoteMeasureOwl extends FloatField {
             return;
         }
         this.state.isMeasuring = true;
-        // this._connect_to_websockets();
         this.state.buttonClass = "btn-secondary";
         this[`_connect_to_${this.connection_mode}`]();
     }

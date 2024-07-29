@@ -15,13 +15,6 @@
         "views/res_users_views.xml",
         "security/ir.model.access.csv",
     ],
-    # "assets": {
-    #     "web.assets_backend": [
-    #         "web_widget_remote_measure/static/src/**/*.js",
-    #         "web_widget_remote_measure/static/src/**/*.scss",
-    #     ],
-    #     "web.assets_qweb": ["web_widget_remote_measure/static/src/**/*.xml"],
-    # },
     "assets": {
         "web.assets_backend": [
             "web_widget_remote_measure/static/src/**/*.esm.js",
