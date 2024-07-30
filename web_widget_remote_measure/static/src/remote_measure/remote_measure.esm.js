@@ -7,6 +7,8 @@ import { session } from "@web/session";
 import { _t } from 'web.core';
 const {onWillStart, onMounted, onWillUnmount, useState } = owl;
 
+console.log('DEBERIA SER EL 1')
+
 const nextState = {
     "fa-thermometer-empty": "fa-thermometer-quarter",
     "fa-thermometer-quarter": "fa-thermometer-half",
@@ -117,7 +119,6 @@ export class RemoteMeasureOwl extends FloatField {
             }
 
             if (processedData.stable && !stream_success_counter) {
-                debugger;
                 this._stableMeasure();
                 this._closeSocket();
                 this._awaitingMeasure();
@@ -236,6 +237,7 @@ export class RemoteMeasureOwl extends FloatField {
         console.log("**** _closeSocket() ****");
         if (this.socket) {
             this.socket.close();
+            this.state.isMeasuring = false;
             this.socket = null; // Asegurarse de que la referencia al socket se elimine
         }
     }

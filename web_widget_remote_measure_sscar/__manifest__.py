@@ -10,7 +10,6 @@
     "license": "AGPL-3",
     "category": "Stock",
     "depends": [
-        "web_widget_remote_measure",
         "stock_weighing_remote_measure",
     ],
     "data": [],

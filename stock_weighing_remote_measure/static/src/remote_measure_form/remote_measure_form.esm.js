@@ -3,10 +3,9 @@ import {registry} from "@web/core/registry";
 import { FloatField } from "@web/views/fields/float/float_field";
 const { useState } = owl;
 import { Dialog } from "@web/core/dialog/dialog";
+import {RemoteMeasureOwl} from "@web_widget_remote_measure/remote_measure/remote_measure.esm";
 
-debugger;
-// import {RemoteMeasureOwl} from "@web_widget_remote_measure/remote_measure/remote_measure.esm";
-const RemoteMeasureOwl = registry.category("fields").get("remote_measure");
+console.log('DEBERIA SER EL 2')
 
 
 export class RemoteMeasureFormOwl extends RemoteMeasureOwl {
@@ -174,5 +173,4 @@ RemoteMeasureFormOwl.extractProps = ({ attrs, field }) => {
 RemoteMeasureFormOwl.additionalClasses = ["weight_wizard"];
 RemoteMeasureFormOwl.components = { Dialog };
 
-debugger;
 registry.category("fields").add("remote_measure_form", RemoteMeasureFormOwl);
