@@ -68,7 +68,7 @@
                                             class="badge text-bg-light"
                                             title="Destination"
                                         >
-                                            <t t-out="record.origin_names.value" /> 
+                                            <t t-out="record.origin_names.value" />
                                             <i class="fa fa-arrow-right mx-2" />
                                             <t t-out="record.location_dest_id.value"/>
                                         </span>
@@ -116,7 +116,7 @@
                                 <!-- Recording button -->
                                 <div class="col-1">
                                     <div
-                                        t-if="record.has_weight.raw_value &amp;&amp; !['done', 'cancel', 'draft'].includes(record.state.raw_value)">
+                                        t-if="!['done', 'cancel', 'draft'].includes(record.state.raw_value)">
                                         <button
                                             string="Record weight"
                                             name="action_weighing"
@@ -222,7 +222,7 @@
                                 <!-- Details -->
                                 <div class="col-1">
                                     <button
-                                        t-if="record.move_lines_count.raw_value &amp;&amp; !single_move_line &amp;&amp; !context.hide_weight_detail_buttons"
+                                        t-if="(!single_move_line &amp;&amp; !context.hide_weight_detail_buttons) || context.show_weight_detail_buttons"
                                         type="object"
                                         name="action_weight_detailed_operations"
                                         t-attf-class="btn btn-lg {{single_move_line ? 'btn-secondary' : 'btn-primary'}}"
