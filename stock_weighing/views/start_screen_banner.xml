@@ -6,7 +6,7 @@
             <div t-attf-class="o_onboarding">
                 <div class="o_onboarding_wrap pt-0" style="height: 100vh">
                     <div
-                        class="row justify-content-center collapse show weight_actions"
+                        class="row justify-content-center collapse show weight_actions mx-0"
                     >
                         <!-- Action cards -->
                         <t t-foreach="actions" t-as="action">

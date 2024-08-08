@@ -49,7 +49,7 @@
                             />
                         </group>
                     </div>
-                    <footer>
+                    <footer class="align-items-center">
                         <button
                             name="record_weight"
                             type="object"

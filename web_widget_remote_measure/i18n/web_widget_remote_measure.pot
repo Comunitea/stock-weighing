@@ -4,8 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 15.0\n"
+"Project-Id-Version: Odoo Server 16.0\n"
 "Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-08-06 09:28+0000\n"
+"PO-Revision-Date: 2024-08-06 09:28+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -44,6 +46,13 @@ msgstr ""
 msgid ""
 "Conversion between Units of Measure can only occur if they belong to the "
 "same category. The conversion will be made based on the ratios."
+msgstr ""
+
+#. module: web_widget_remote_measure
+#. odoo-javascript
+#: code:addons/web_widget_remote_measure/static/src/remote_measure/remote_measure.esm.js:0
+#, python-format
+msgid "Could not conect to wenSocket"
 msgstr ""
 
 #. module: web_widget_remote_measure
@@ -94,8 +103,8 @@ msgid "Host"
 msgstr ""
 
 #. module: web_widget_remote_measure
-#. openerp-web
-#: code:addons/web_widget_remote_measure/static/src/xml/measure_device_status.xml:0
+#. odoo-javascript
+#: code:addons/web_widget_remote_measure/static/src/legacy/xml/measure_device_status.xml:0
 #, python-format
 msgid "Host is up?"
 msgstr ""
@@ -185,8 +194,8 @@ msgid "Remote Devices"
 msgstr ""
 
 #. module: web_widget_remote_measure
-#. openerp-web
-#: code:addons/web_widget_remote_measure/static/src/js/remote_measure_widget.esm.js:0
+#. odoo-javascript
+#: code:addons/web_widget_remote_measure/static/src/legacy/js/remote_measure_widget.esm.js:0
 #, python-format
 msgid "Remote Measure"
 msgstr ""
@@ -218,7 +227,7 @@ msgstr ""
 
 #. module: web_widget_remote_measure
 #: model:ir.model,name:web_widget_remote_measure.model_res_users
-msgid "Users"
+msgid "User"
 msgstr ""
 
 #. module: web_widget_remote_measure
@@ -237,8 +246,8 @@ msgid "e.g. Dock 1 Scale"
 msgstr ""
 
 #. module: web_widget_remote_measure
-#. openerp-web
-#: code:addons/web_widget_remote_measure/static/src/xml/measure_device_status.xml:0
+#. odoo-javascript
+#: code:addons/web_widget_remote_measure/static/src/legacy/xml/measure_device_status.xml:0
 #, python-format
 msgid "{{widget.title}}"
 msgstr ""

@@ -12,18 +12,18 @@
                         t-if="tares.length"
                         class="ms-1 me-1 text-info text-start w-100"
                     >
-                        <i class="fa fa-level-down"></i> 
-                        TARE: 
-                        <span t-out="this.state.tare" name="tare_amount"  class="fw-bold text-danger me-1">0</span> 
+                        <i class="fa fa-level-down"></i>
+                        TARE:
+                        <span t-out="this.state.tare" name="tare_amount"  class="fw-bold text-danger me-1">0</span>
                         <span t-out="this.uom.name" class="text-danger me-2"></span>
-                        
-    
-                        <i class="fa fa-caret-square-o-right"></i> 
-                        REAL: 
-                        <span name="real_amount" class="fw-bold text-success me-1" t-out="this.state.real_amount"></span> 
+
+
+                        <i class="fa fa-caret-square-o-right"></i>
+                        REAL:
+                        <span name="real_amount" class="fw-bold text-success me-1" t-out="this.state.real_amount"></span>
                         <span t-out="this.uom.name" class="text-success"></span>
-                        
-                        
+
+
                         <div
                             class="d-inline float-end text-dark"
                             title="Device info"
@@ -31,29 +31,29 @@
                             role="button"
                             t-on-click="_onDeviceSelector"
                         >
-                            <i class="fa fa-thermometer"></i> 
+                            <i class="fa fa-thermometer"></i>
                             <span t-out="this.state.remote_device_name"></span>
                         </div>
                     </div>
 
                     <!-- todo: Improve mt-4 in span button. Use flexbox and align itemns to emulate -->
                     <div name="weight_control" class="w-100">
-                        <span 
-                            t-if="!props.readonly" 
-                            t-att-class="'btn btn-lg float-start mt-4 ' + state.buttonClass" 
+                        <span
+                            t-if="!props.readonly"
+                            t-att-class="'btn btn-lg float-start mt-4 ' + state.buttonClass"
                             t-on-click.prevent="toggleMeasurement">
                                 <i t-att-class="'fa ' + state.icon"></i>
                         </span>
-                        <input 
-                            t-att-id="props.id" 
-                            t-ref="numpadDecimal" 
-                            autocomplete="off" 
-                            t-att-placeholder="props.placeholder" 
-                            t-att-type="props.inputType" 
-                            inputmode="decimal" 
-                            class="o_input o_input_weight text-info w-50" 
-                            t-att-step="props.step" 
-                            
+                        <input
+                            t-att-id="props.id"
+                            t-ref="numpadDecimal"
+                            autocomplete="off"
+                            t-att-placeholder="props.placeholder"
+                            t-att-type="props.inputType"
+                            inputmode="decimal"
+                            class="o_input o_input_weight text-info w-50"
+                            t-att-step="props.step"
+
                         />
                     </div>
                 </div>
@@ -125,16 +125,14 @@
                     </div>
                 </div>
             </div>
-                     
+
             <Dialog t-if="this.state.show_dialog" title="'Select Device'" size="'sm'">
-                <div class="modal-body">
-                    <div t-foreach="remote_devices" t-as="device" t-key="device_index"
-                        
-                        >
+                <div>
+                    <div t-foreach="remote_devices" t-as="device" t-key="device_index">
                         <button class="btn btn-dark btn-lg btn-block mb-2 w-100" t-on-click="_onSelectDevice" t-att-data-device_id="device.id">
                             <t t-out="device.name"/>
                         </button>
-                    <div/>
+                    </div>
                 </div>
                 <t t-set-slot="footer">
                     <button class="btn btn-lg btn-light btn-block" t-on-click="() => this.state.show_dialog = false">Discard</button>
@@ -142,5 +140,11 @@
             </Dialog>
         </div>
     </t>
+
+    <!-- <t t-inherit="web.Dialog.header" t-inherit-mode="extension" owl="1">
+        <xpath expr="//button[hasclass('btn-close')]" position="attributes">
+            <attribute name="class">btn-close btn-sm</attribute>
+        </xpath>
+    </t> -->
 
 </templates>

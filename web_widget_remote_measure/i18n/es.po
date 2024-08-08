@@ -4,22 +4,23 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 15.0\n"
+"Project-Id-Version: Odoo Server 16.0\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2023-11-19 16:33+0000\n"
-"Last-Translator: Ivorra78 <informatica@totmaterial.es>\n"
-"Language-Team: none\n"
-"Language: es\n"
+"POT-Creation-Date: 2024-08-06 09:14+0000\n"
+"PO-Revision-Date: 2024-08-06 09:14+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
-"Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.17\n"
+"Plural-Forms: \n"
 
 #. module: web_widget_remote_measure
 #: model:ir.model.fields,help:web_widget_remote_measure.field_remote_measure_device__read_interval
-msgid "(0 for no sleep between reads) Miliseconds to wait between device reads"
+msgid ""
+"(0 for no sleep between reads) Miliseconds to wait between device reads"
 msgstr ""
+"(0 para no pausar entre lecturas) Milisegundos para esperar entre lecturas del dispositivo"
 
 #. module: web_widget_remote_measure
 #: model:ir.model.fields,field_description:web_widget_remote_measure.field_remote_measure_device__active
@@ -50,6 +51,13 @@ msgstr ""
 "La conversión entre Unidades de Medida sólo puede producirse si pertenecen a "
 "la misma categoría. La conversión se realizará en función de las "
 "proporciones."
+
+#. module: web_widget_remote_measure
+#. odoo-javascript
+#: code:addons/web_widget_remote_measure/static/src/remote_measure/remote_measure.esm.js:0
+#, python-format
+msgid "Could not conect to wenSocket"
+msgstr "No se pudo conectar a wenSocket"
 
 #. module: web_widget_remote_measure
 #: model:ir.model.fields,field_description:web_widget_remote_measure.field_remote_measure_device__create_uid
@@ -91,7 +99,7 @@ msgstr "Mostrar Nombre"
 #. module: web_widget_remote_measure
 #: model:ir.model.fields,help:web_widget_remote_measure.field_remote_measure_device__non_stop_read
 msgid "Don't stop reading until the widget is disposed"
-msgstr ""
+msgstr "No detener la lectura hasta que el widget sea desechado"
 
 #. module: web_widget_remote_measure
 #: model:ir.model.fields,field_description:web_widget_remote_measure.field_remote_measure_device__host
@@ -99,8 +107,8 @@ msgid "Host"
 msgstr "Huésped"
 
 #. module: web_widget_remote_measure
-#. openerp-web
-#: code:addons/web_widget_remote_measure/static/src/xml/measure_device_status.xml:0
+#. odoo-javascript
+#: code:addons/web_widget_remote_measure/static/src/legacy/xml/measure_device_status.xml:0
 #, python-format
 msgid "Host is up?"
 msgstr "¿El huésped está levantado?"
@@ -123,7 +131,7 @@ msgstr "ID (identificación)"
 #. module: web_widget_remote_measure
 #: model:ir.model.fields,field_description:web_widget_remote_measure.field_remote_measure_device__instant_read
 msgid "Instant Read"
-msgstr ""
+msgstr "Lectura Instantánea"
 
 #. module: web_widget_remote_measure
 #: model:ir.model.fields,field_description:web_widget_remote_measure.field_remote_measure_device____last_update
@@ -148,7 +156,7 @@ msgstr "Nombre"
 #. module: web_widget_remote_measure
 #: model:ir.model.fields,field_description:web_widget_remote_measure.field_remote_measure_device__non_stop_read
 msgid "Non Stop Read"
-msgstr ""
+msgstr "Lectura Continua"
 
 #. module: web_widget_remote_measure
 #: model:ir.model.fields,help:web_widget_remote_measure.field_remote_measure_device__protocol
@@ -174,17 +182,17 @@ msgstr "Proporción"
 #. module: web_widget_remote_measure
 #: model:ir.model.fields,field_description:web_widget_remote_measure.field_remote_measure_device__read_interval
 msgid "Read Interval"
-msgstr ""
+msgstr "Intervalo de Lectura"
 
 #. module: web_widget_remote_measure
 #: model_terms:ir.ui.view,arch_db:web_widget_remote_measure.measure_device_form
 msgid "Read behavior"
-msgstr ""
+msgstr "Comportamiento de Lectura"
 
 #. module: web_widget_remote_measure
 #: model:ir.model.fields,help:web_widget_remote_measure.field_remote_measure_device__instant_read
 msgid "Read right on as the widget gets rendered"
-msgstr ""
+msgstr "Leer justo cuando el widget se renderiza"
 
 #. module: web_widget_remote_measure
 #: model:ir.actions.act_window,name:web_widget_remote_measure.action_measure_device
@@ -193,8 +201,8 @@ msgid "Remote Devices"
 msgstr "Dispositivos Remotos"
 
 #. module: web_widget_remote_measure
-#. openerp-web
-#: code:addons/web_widget_remote_measure/static/src/js/remote_measure_widget.esm.js:0
+#. odoo-javascript
+#: code:addons/web_widget_remote_measure/static/src/legacy/js/remote_measure_widget.esm.js:0
 #, python-format
 msgid "Remote Measure"
 msgstr "Medición a Distancia"
@@ -226,8 +234,8 @@ msgstr "Unidad de Medida"
 
 #. module: web_widget_remote_measure
 #: model:ir.model,name:web_widget_remote_measure.model_res_users
-msgid "Users"
-msgstr "Usuarios"
+msgid "User"
+msgstr "Usuario"
 
 #. module: web_widget_remote_measure
 #: model:ir.model.fields.selection,name:web_widget_remote_measure.selection__remote_measure_device__connection_mode__webservices
@@ -245,8 +253,8 @@ msgid "e.g. Dock 1 Scale"
 msgstr "p. ej. Muelle 1 Escala"
 
 #. module: web_widget_remote_measure
-#. openerp-web
-#: code:addons/web_widget_remote_measure/static/src/xml/measure_device_status.xml:0
+#. odoo-javascript
+#: code:addons/web_widget_remote_measure/static/src/legacy/xml/measure_device_status.xml:0
 #, python-format
 msgid "{{widget.title}}"
 msgstr ""

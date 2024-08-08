@@ -3,8 +3,11 @@
     .btn-group {
         .sscar-button {
             padding: 1.2rem 2.4rem; /* Ajusta el relleno */
-            font-size: 2rem; 
+            font-size: 2rem;
             border-radius: 0.375rem;
         }
+    }
+    .btn-close{
+        font-size: initial;
     }
 }
