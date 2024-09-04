@@ -11,11 +11,19 @@ class MrpProduction(models.Model):
     weighing_operations = fields.Boolean(related="picking_type_id.weighing_operations")
     has_weighing_operations = fields.Boolean(compute="_compute_has_weighing_operations")
 
+    has_raw_weighing_operations = fields.Boolean(compute="_compute_has_raw_weighing_operations")
+
     @api.depends("move_finished_ids")
     def _compute_has_weighing_operations(self):
         for mrp_production in self:
             mrp_production.has_weighing_operations = (
                 mrp_production.move_finished_ids.filtered("has_weight")
+            )
+    @api.depends("move_raw_ids")
+    def _compute_has_raw_weighing_operations(self):
+        for mrp_production in self:
+            mrp_production.has_raw_weighing_operations = (
+                mrp_production.move_raw_ids.filtered("has_weight")
             )
 
     def action_weighing_operations(self):
@@ -30,5 +38,20 @@ class MrpProduction(models.Model):
             self.env.context,
             **ast.literal_eval(action["context"]),
             group_by=["production_id"]
+        )
+        return action
+    
+    
+    def action_raw_weighing_operations(self):
+        """Weighing operations for this production order"""
+        action = self.env["ir.actions.actions"]._for_xml_id(
+            "stock_weighing.weighing_operation_action"
+        )
+        weight_moves = self.move_raw_ids.filtered("has_weight")
+        action["name"] = _("Weighing operations for %(name)s", name=self.name)
+        action["domain"] = [("id", "in", weight_moves.ids)]
+        action["context"] = dict(
+            self.env.context,
+            **ast.literal_eval(action["context"])
         )
         return action

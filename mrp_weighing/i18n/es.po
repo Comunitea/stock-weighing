@@ -6,14 +6,19 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-08-06 10:44+0000\n"
-"PO-Revision-Date: 2024-08-06 10:44+0000\n"
+"POT-Creation-Date: 2024-09-04 10:56+0000\n"
+"PO-Revision-Date: 2024-09-04 10:56+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: \n"
+
+#. module: mrp_weighing
+#: model:ir.model.fields,field_description:mrp_weighing.field_mrp_production__has_raw_weighing_operations
+msgid "Has Raw Weighing Operations"
+msgstr "Tiene operaciones de pesaje"
 
 #. module: mrp_weighing
 #: model:ir.model.fields,field_description:mrp_weighing.field_mrp_production__has_weighing_operations
@@ -57,6 +62,7 @@ msgstr "Órdenes de producción de pesaje"
 #. module: mrp_weighing
 #. odoo-python
 #: code:addons/mrp_weighing/models/mrp_production.py:0
+#: code:addons/mrp_weighing/models/mrp_production.py:0
 #, python-format
 msgid "Weighing operations for %(name)s"
 msgstr "Operaciones de pesaje para %(name)s"
@@ -65,6 +71,11 @@ msgstr "Operaciones de pesaje para %(name)s"
 #: model_terms:ir.ui.view,arch_db:mrp_weighing.mrp_production_form_view
 msgid "Weight"
 msgstr "Peso"
+
+#. module: mrp_weighing
+#: model_terms:ir.ui.view,arch_db:mrp_weighing.mrp_production_form_view
+msgid "Weight Components"
+msgstr "Peso Componentes"
 
 #. module: mrp_weighing
 #: model:ir.model,name:mrp_weighing.model_weigh_operation_selection
