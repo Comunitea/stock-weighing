@@ -126,7 +126,7 @@ export class AutoMeasureWidget extends RemoteMeasureOwl {
                     target: 'new',
                     context: { active_id: move_id }
                 };
-                /const wizardResult = await this.env.services.action.doAction(action
+                const wizardResult = await this.env.services.action.doAction(action)
                 console.log("Creo operación")
                 // await this.orm.call("stock.move", "set_auto_weight", [move_id, this.value]);
                 // debugger;
