@@ -12,6 +12,7 @@
     "depends": ["stock_weighing_remote_measure"],
     "data": [
         "views/stock_move_views.xml",
+        "wizard/weighing_wizard_views.xml",
     ],
     "assets": {
         "web.assets_backend": [

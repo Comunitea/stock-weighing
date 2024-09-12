@@ -2,7 +2,7 @@
     <t t-name="web_widget_auto_measure.AutoMeasureWidget" owl="1">
        <div class="o_auto_measure_widget" t-if="showWidget">
             <span>
-                <t t-esc="value"/> <!-- Mostramos el valor flotante --><
+                <t t-esc="value"/> <!-- Mostramos el valor flotante -->
                 <!-- <t t-esc="amount"/> Mostramos el valor flotante< -->
             </span>
            <i t-att-class="'fa fa-circle ' + (circleColor === 'red' ? 'text-danger' : 'text-success')"

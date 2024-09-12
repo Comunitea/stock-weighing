@@ -8,16 +8,17 @@ export class AutoMeasureWidget extends RemoteMeasureOwl {
     setup() {
         console.log("**** 2 setup() ****");
         super.setup();
-        this.value = 0;
+        // this.value = 0;
+        this.value = this.props.value;
         this.showWidget = this.env.config.viewType === "kanban" ? false : true;
 
         
         this.reconnectionDelay = 1000;  // Inicialmente 5 segundos
         this.maxReconnectionDelay = 60000;  // Límite de 1 minuto para el backoff exponencial
         this.keepAliveInterval = 30000;  // Ping cada 30 segundos
-        if (this.showWidget) {
-            this._connect_to_websockets2();  // Conectar al iniciar el componente
-        }
+        // if (this.showWidget) {
+        //     this._connect_to_websockets2();  // Conectar al iniciar el componente
+        // }
     }
 
     get circleColor() {
@@ -25,12 +26,14 @@ export class AutoMeasureWidget extends RemoteMeasureOwl {
         return this.value > 0 ? 'red' : 'green';
     }
 
-    // async loadRemoteDeviceData() {
-    //     // Llamamos al método original para cargar los datos del dispositivo remoto
-    //     await super.loadRemoteDeviceData();
-    //     console.log("**** loadRemoteDeviceData() ****");
-    //     this._connect_to_websockets2();  // Conectamos automáticamente el socket al cargar los datos
-    // }
+    async loadRemoteDeviceData() {
+        // Llamamos al método original para cargar los datos del dispositivo remoto
+        await super.loadRemoteDeviceData();
+        console.log("**** loadRemoteDeviceData() ****");
+        if (this.showWidget) {
+            this._connect_to_websockets2();  // Conectar al iniciar el componente
+        }
+    }
 
     _connect_to_websockets2() {
         console.log("**** _connect_to_websockets2() ****");
@@ -85,7 +88,6 @@ export class AutoMeasureWidget extends RemoteMeasureOwl {
         };
 
         this.socket.onclose = () => {
-            debugger;
             console.log("WebSocket connection closed. Trying to reconnect...");
             this._stopKeepAlive();
             this._reconnectWebSocket();  // Intentar reconectar
@@ -128,24 +130,23 @@ export class AutoMeasureWidget extends RemoteMeasureOwl {
                     target: 'new',
                     context: { active_id: move_id }
                 };
-                // const wizardResult = await this.env.services.action.doAction(action)
+                const wizardResult = await this.env.services.action.doAction(action)
                 console.log("Creo operación")
-                await this.orm.call("stock.move", "set_auto_weight", [move_id, this.value]);
-                // debugger;
-                const viewAction = this.env.model.actionService.currentController.action;
-                debugger;
+                // await this.orm.call("stock.move", "set_auto_weight", [move_id, this.value]);
+                // const viewAction = this.env.model.actionService.currentController.action;
                 // await this.env.model.actionService.doAction({
                 //     type: 'ir.actions.client',
                 //     tag: 'reload',
                 // });
                 // this.env.model.actionService.restore()
                 // this.env.model.actionService.doAction(viewAction, {});
-                this.env.model.actionService.switchView('form')
+                // this.env.model.actionService.switchView('form')
                 // this.env.model.actionService.loadAction(viewAction.id, {});
                 // this.trigger_up('reload');  // Esto recarga la vista en la que está montado el componente
             }
         }
         this.props.update(this.amount);
+        // this.props.update(this.value);
     }
 }
 AutoMeasureWidget.template = "web_widget_auto_measure.AutoMeasureWidget";
