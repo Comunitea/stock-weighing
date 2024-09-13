@@ -8,8 +8,8 @@ export class AutoMeasureWidget extends RemoteMeasureOwl {
     setup() {
         console.log("### 2 setup() ###");
         super.setup();
-        this.value = 0;  // this.amount es reactivo (esta comentado en el useState, pero no debería, se mete luego en el onmessage y el _recordMeasure())
-        // this.value = this.props.value;
+        // this.value = 0;  // this.amount es reactivo (esta comentado en el useState, pero no debería, se mete luego en el onmessage y el _recordMeasure())
+        this.value = this.props.value;
         this.showWidget = this.env.config.viewType === "kanban" ? false : true;
 
         
@@ -62,6 +62,7 @@ export class AutoMeasureWidget extends RemoteMeasureOwl {
             // }
             if ( !this.socket) {
                 this.socket = new WebSocket(this.host);
+                console.log("-----------WEBSOCKET CREATED----------");
                 this._setupWebSocketEvents();  // Configuramos los eventos del WebSocket
             }
             else {
@@ -87,6 +88,7 @@ export class AutoMeasureWidget extends RemoteMeasureOwl {
         this.socket.onmessage = async (msg) => {
             console.log("### onmessage() (desde _connect_to_websockets2) ###");
             const data = await msg.data.text();
+            console.log("Data received: ", data);
             const processedData = this[`_proccess_msg_${this.protocol}`](data);
 
             if (!processedData.stable) {
@@ -119,10 +121,14 @@ export class AutoMeasureWidget extends RemoteMeasureOwl {
             console.error('WebSocket error');
         };
 
-        this.socket.onclose = () => {
-            console.log("WebSocket connection closed. Trying to reconnect...");
-            // this._stopKeepAlive();
-            // this._reconnectWebSocket();  // Intentar reconectar
+        // this.socket.onclose = () => {
+        //     console.log("WebSocket connection closed");
+        //     // console.log("WebSocket connection closed. Trying to reconnect...");
+        //     // this._stopKeepAlive();
+        //     // this._reconnectWebSocket();  // Intentar reconectar
+        // };
+        this.socket.onclose = (event) => {
+            console.log(`WebSocket connection closed with code: ${event.code}, reason: ${event.reason}`);
         };
     }
 
@@ -155,17 +161,18 @@ export class AutoMeasureWidget extends RemoteMeasureOwl {
             
             if (oldValue === 0 && this.amount > 0) {
                 let move_id = this.props.record.data.id
-                const action = {
-                    type: 'ir.actions.act_window',
-                    res_model: 'weighing.wizard',
-                    views: [[false, 'form']],
-                    target: 'new',
-                    context: { active_id: move_id }
-                };
                 console.log("Creo operación")
                 await this.orm.call("stock.move", "set_auto_weight", [move_id, this.value]);
                 this.env.model.actionService.switchView('form')
+                // await this.env.model.actionService.switchView('form')
                 
+                // const action = {
+                //     type: 'ir.actions.act_window',
+                //     res_model: 'weighing.wizard',
+                //     views: [[false, 'form']],
+                //     target: 'new',
+                //     context: { active_id: move_id }
+                // };
                 //  await this.env.services.action.doAction(action)
                 // const viewAction = this.env.model.actionService.currentController.action;
                 // this.env.model.actionService.loadAction(viewAction.id, {});
@@ -178,7 +185,6 @@ export class AutoMeasureWidget extends RemoteMeasureOwl {
                 // this.trigger_up('reload');  // Esto recarga la vista en la que está montado el componente
             }
         }
-        debugger;
         this.props.update(this.amount);
         // this.props.update(this.value);
     }
@@ -186,6 +192,13 @@ export class AutoMeasureWidget extends RemoteMeasureOwl {
 AutoMeasureWidget.template = "web_widget_auto_measure.AutoMeasureWidget";
 AutoMeasureWidget.props = {
     ...RemoteMeasureOwl.props,
+};
+
+const superExtractProps = RemoteMeasureOwl.extractProps;
+AutoMeasureWidget.extractProps = ({ attrs, field }) => {
+    return {
+        ...superExtractProps({attrs, field}),  // Geting Digits Precission
+    };
 };
 
 registry.category("fields").add("auto_measure", AutoMeasureWidget);
