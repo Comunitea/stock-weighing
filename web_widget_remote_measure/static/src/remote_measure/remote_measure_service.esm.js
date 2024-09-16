@@ -21,20 +21,31 @@ export class MeasureReader {
     }
 
     disconnect() {
-        if (this.socket) {
-            this.socket.close();
-            this.socket = null;
-            // this.host = null;
-            // this.connection_mode = null;
-            // this.protocol = null;
+        if (!this.isConnected()) {
+            console.warn("ignoring disconnect request, not connected");
+            return;
         }
+
+        this.socket.close();
+        this.socket = null;
+        // this.host = null;
+        // this.connection_mode = null;
+        // this.protocol = null;
+    }
+
+    isConnected() {
+        if (!this.socket) {
+            return false;
+        }
+        // return this.socket && this.socket.readyState === WebSocket.OPEN;
+        return true;
     }
 
     _connect_to_websockets() {
-        debugger;
         try {
-            if (this.socket) {
-                console.warn("Socket already exists, closing it");
+            if (this.isConnected()) {
+                console.warn("ignoring connect request, already connected");
+                return;
             }
             this.socket = new WebSocket(this.host);
         } catch (error) {
@@ -80,7 +91,6 @@ export class MeasureReader {
     }
 
     _proccess_msg_f501(msg) {
-        console.log("**** _proccess_msg_f501() ****");
         return {
             stable: msg[1] === "\x20",
             value: parseFloat(msg.slice(2, 10)),
@@ -88,7 +98,6 @@ export class MeasureReader {
     }
 
     _proccess_msg_sscar(msg) {
-        console.log("**** _proccess_msg_sscar() ****", msg);
         const noIDPattern = /^([+-])\s*(\d+(\.\d{1,3})?)\r$/;
         const withIDPattern = /^(\d{2}):\s*([+-])\s*(\d+(\.\d{1,3})?)\r$/;
 
@@ -129,7 +138,7 @@ export class MeasureReader {
 
 export const MeasureReaderService = {
     start(env) {
-        debugger;
+        console.warn("[[[[[[[[[[[[Starting MeasureReaderService]]]]]]]]]]]]]]");
         return new MeasureReader();
     }
 };

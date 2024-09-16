@@ -48,7 +48,6 @@ export class RemoteMeasureOwl extends FloatField {
         // Add to your view options so you can log requests and responses
 
         onWillStart(async () => {
-            console.log("**** onWillStart() ****");
             await this.loadRemoteDeviceData();
         });
 

@@ -13,37 +13,30 @@ export class AutoMeasureWidget extends RemoteMeasureOwl {
         this.isprocessing = false;
         // this.value = 0;  // this.amount es reactivo (esta comentado en el useState, pero no debería, se mete luego en el onmessage y el _recordMeasure())
         this.value = this.props.value;
+        // this.amount = this.props.value;
         this.showWidget = this.env.config.viewType === "kanban" ? false : true;
 
         
-        this.reconnectionDelay = 1000;  // Inicialmente 5 segundos
-        this.maxReconnectionDelay = 60000;  // Límite de 1 minuto para el backoff exponencial
-        this.keepAliveInterval = 30000;  // Ping cada 30 segundos
+        // this.reconnectionDelay = 1000;  // Inicialmente 5 segundos
+        // this.maxReconnectionDelay = 60000;  // Límite de 1 minuto para el backoff exponencial
+        // this.keepAliveInterval = 30000;  // Ping cada 30 segundos
 
-        this.last_weight = 0;
 
         // Hooks can not be overwrited, so we use the original methods in super class
         // if we declare the hooks in the subclass, they will be executed after the superclass
 
-        // onWillStart(async () => {
-        //     debugger;
-        //     console.log("### 2 onWillStart() ###");
-        // });
-
-        // onMounted(() => {
-        //     this.measureService.connect(this.props.host, this.props.protocol);
-        //     this.measureService.bus.on("stableMeasure", this, this.onStableMeasure);
-        //     this.measureService.bus.on("unstableMeasure", this, this.onUnstableMeasure);
-        // });
         onWillUnmount(() => {
             console.log("### 2 onWillUnmount() ###");
-            debugger;
-            this.measureService.disconnect();
+            
+            this.measureService.bus.off("stableMeasure", this, this.onStableMeasure);
+            this.measureService.bus.off("unstableMeasure", this, this.onUnstableMeasure);
+            // !! El disconect provoca que no se vuelva a montar
+            // if (this.measureService.isConnected()) {
+            //     this.measureService.disconnect();
+            // }
+            // this.measureService.disconnect();
         });
-        // onWillDestroy(() => {
-        //     console.log("### 2 onWillDestroy() ###");
-        //     this._closeSocket();
-        // });
+
     }
 
     get circleColor() {
@@ -55,52 +48,64 @@ export class AutoMeasureWidget extends RemoteMeasureOwl {
         // Llamamos al método original para cargar los datos del dispositivo remoto
         await super.loadRemoteDeviceData();
         console.log("### loadRemoteDeviceData() ###");
-        if (this.showWidget) {
+        if (this.showWidget && !this.measureService.isConnected()) {
             // this._connect_to_websockets2();  // Conectar al iniciar el componente
             
             //NEW IMPLEMENTATION
+            console.warn("Intento conectar------------------")
             this.measureService.connect(this.host, this.connection_mode, this.protocol);
+            console.log("Is connected: ", this.measureService.isConnected());
+            this.measureService.bus.off("stableMeasure", this, this.onStableMeasure);
+            this.measureService.bus.off("unstableMeasure", this, this.onUnstableMeasure);
             this.measureService.bus.on("stableMeasure", this, this.onStableMeasure);
             this.measureService.bus.on("unstableMeasure", this, this.onUnstableMeasure);
         }
     }
 
-    async onStableMeasure(value) {
-        // if (this.isprocessing){
-        //     return
-        // }
-        // this.isprocessing = true;
-        console.log("### onStableMeasure() ###");
-        console.log("Value: ", value);
+    onStableMeasure(value) {
+        
+        console.log("-------- onStableMeasure() ------------, Value: ", value);
         let oldValue = this.value;
         this.value = this.amount;
+        // this.amount = value;
 
-        if (oldValue === 0 && this.amount > 0 && this.amount != this.last_weight) {
-            this.last_weight = this.amount;
-            let move_id = this.props.record.data.id
-            console.log("Creo operación")
-            debugger;
-            await this.orm.call("stock.move", "set_auto_weight", [move_id, this.value]);
-            // await this.env.model.actionService.switchView('form')
-            await this.env.model.actionService.doAction({
-                        type: 'ir.actions.client',
-                        tag: 'reload',
-            });
+        console.log("oldValue: ", oldValue , "this.amount: ", this.amount);
+        if (oldValue === 0 && this.amount > 0) {
+            this.doAutoOperation();
             
         }
 
         this.props.update(this.amount);
-        // this.isprocessing = false;
-        
-        // this._stableMeasure();
     }
     onUnstableMeasure(value) {
-        console.log("### onUnstableMeasure() ###");
-        console.log("Value: ", value);
-        this._unstableMeasure();
-        this.amount = value;
+        console.log("### onUnstableMeasure() ###: ", value);
+        this.amount = value;  // Important to no launch error
         this._setMeasure();
-        this._recordMeasure(this.amount);
+        // this._recordMeasure(this.amount);
+    }
+
+    async doAutoOperation() {
+        this.last_weight = this.amount;
+        let move_id = this.props.record.data.id
+        console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!Creo operación!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+        debugger;
+        await this.orm.call("stock.move", "set_auto_weight", [move_id, this.value]);
+        debugger;
+        this.measureService.bus.off("stableMeasure", this, this.onStableMeasure);
+        this.measureService.bus.off("unstableMeasure", this, this.onUnstableMeasure);
+        this.measureService.disconnect();
+        // this.env.model.actionService.doAction("reload_context");
+        // await this.env.model.actionService.switchView('form')
+        await this.env.model.actionService.doAction({
+            type: 'ir.actions.client',
+            tag: 'soft_reload',
+        });
+        // this.measureService.connect(this.host, this.connection_mode, this.protocol);
+        // this.measureService.bus.off("stableMeasure", this, this.onStableMeasure);
+        // this.measureService.bus.off("unstableMeasure", this, this.onUnstableMeasure);
+        // console.log("~~~~~~~~~~~~~~~~~~~REloades~~~~~~~~~~~~~~~~~~~~~~~")
+        // console.log(this.measureService.stocket)
+        // await this.env.model.root.load();
     }
 
     // _connect_to_websockets2() {
