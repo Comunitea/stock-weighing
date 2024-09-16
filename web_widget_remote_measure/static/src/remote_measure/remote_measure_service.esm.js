@@ -1,0 +1,137 @@
+/** @odoo-module **/
+import { registry } from "@web/core/registry";
+const { EventBus } = owl;
+
+
+export class MeasureReader {
+    constructor() {
+        this.name = "soylaclase"
+        this.bus = new EventBus();
+        this.socket = null;
+        this.host = null;
+        this.connection_mode = null;
+        this.protocol = null;
+    }
+
+    connect(host, connection_mode, protocol) {
+        this.host = host;
+        this.connection_mode = connection_mode;
+        this.protocol = protocol;
+        this[`_connect_to_${connection_mode}`]();
+    }
+
+    disconnect() {
+        if (this.socket) {
+            this.socket.close();
+            this.socket = null;
+            // this.host = null;
+            // this.connection_mode = null;
+            // this.protocol = null;
+        }
+    }
+
+    _connect_to_websockets() {
+        debugger;
+        try {
+            if (this.socket) {
+                console.warn("Socket already exists, closing it");
+            }
+            this.socket = new WebSocket(this.host);
+        } catch (error) {
+            if (error.code === 18) { // Invalid access error
+                return;
+            }
+            throw error;
+        }
+
+        var streamSuccessCounter = 10;
+
+        this.socket.onmessage = async (msg) => {
+            const data = await msg.data.text();
+            if (!this.protocol){
+                console.error("Protocol not set");
+                return;
+            }
+            if (!this.socket){
+                console.error("socket not set");
+                return;
+            }
+
+            const processedData = this[`_proccess_msg_${this.protocol}`](data);
+            if (!processedData.stable) {
+                streamSuccessCounter = 5;
+            }
+
+            if (processedData.stable && !streamSuccessCounter) {
+                this.bus.trigger("stableMeasure", processedData.value);
+                return;
+            }
+
+            this.bus.trigger("unstableMeasure", processedData.value);
+
+            if (streamSuccessCounter) {
+                --streamSuccessCounter;
+            }
+        };
+
+        this.socket.onerror = () => {
+            this.bus.trigger("error", { message: "Could not connect to WebSocket" });
+        };
+    }
+
+    _proccess_msg_f501(msg) {
+        console.log("**** _proccess_msg_f501() ****");
+        return {
+            stable: msg[1] === "\x20",
+            value: parseFloat(msg.slice(2, 10)),
+        };
+    }
+
+    _proccess_msg_sscar(msg) {
+        console.log("**** _proccess_msg_sscar() ****", msg);
+        const noIDPattern = /^([+-])\s*(\d+(\.\d{1,3})?)\r$/;
+        const withIDPattern = /^(\d{2}):\s*([+-])\s*(\d+(\.\d{1,3})?)\r$/;
+
+        let result = {};
+
+        // Check for message without ID
+        let match = noIDPattern.exec(msg);
+        if (match) {
+            const sign = match[1];
+            const weight = match[2];
+            const read_weight = parseFloat(weight);
+            result = {
+                // stable: sign !== '-',
+                stable: this.last_weight === read_weight,
+                value: read_weight
+            };
+            this.last_weight = read_weight;
+        } else {
+            // Check for message with ID
+            match = withIDPattern.exec(msg);
+            if (match) {
+                const id = match[1];
+                const sign = match[2];
+                const weight = match[3];
+                result = {
+                    id: id,
+                    stable: sign !== '-',
+                    value: parseFloat(weight)
+                };
+            }
+        }
+
+        return result;
+    }
+
+
+}
+
+export const MeasureReaderService = {
+    start(env) {
+        debugger;
+        return new MeasureReader();
+    }
+};
+
+registry.category("services").add("measureReader", MeasureReaderService);
