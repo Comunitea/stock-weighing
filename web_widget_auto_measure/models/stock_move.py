@@ -1,8 +1,8 @@
 # Copyright 2023 Tecnativa - David Vidal
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
-from odoo import fields, models, api
+from odoo import fields, models, api, _
 from odoo.tools.misc import clean_context
-
+import ast
 
 class StockMove(models.Model):
     _inherit = "stock.move"
@@ -25,8 +25,8 @@ class StockMove(models.Model):
             .create(vals)
         )
         if weight:
-            selected_line.qty_done = self.weight
-            selected_line.recorded_weight = self.weight
+            selected_line.qty_done = weight
+            selected_line.recorded_weight = weight
             selected_line.has_recorded_weight = True
             selected_line.weighing_user_id = self.env.user
             selected_line.weighing_date = fields.Datetime.now()
@@ -42,4 +42,27 @@ class StockMove(models.Model):
         # action = selected_line.action_print_weight_record_label()
         # action["close_on_report_download"] = True
         # return action
+    
+    def action_weight_detailed_operations(self):
+        """Weight detailed operations for this picking"""
+        action = super().action_weight_detailed_operations()
+        if self.mode_auto_weighing:
+            action = self.env["ir.actions.actions"]._for_xml_id(
+            "web_widget_auto_measure.weighing_operation_action_auto"
+        )
+            action["name"] = _("Detailed operations for %(name)s", name=self.name)
+            action["domain"] = [("id", "=", self.id)]
+            action["view_mode"] = "form"
+            action["res_id"] = self.id
+            action["views"] = [
+                (view, mode) for view, mode in action["views"] if mode == "form"
+            ]
+            action["context"] = dict(
+                self.env.context,
+                **ast.literal_eval(action["context"]),
+                weight_operation_details=True
+            )
+            return action
+        return action
+
 

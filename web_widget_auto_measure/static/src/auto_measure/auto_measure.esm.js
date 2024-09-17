@@ -13,7 +13,7 @@ export class AutoMeasureWidget extends RemoteMeasureOwl {
         this.isprocessing = false;
         // this.value = 0;  // this.amount es reactivo (esta comentado en el useState, pero no debería, se mete luego en el onmessage y el _recordMeasure())
         this.value = this.props.value;
-        // this.amount = this.props.value;
+        this.amount = this.props.value;
         this.showWidget = this.env.config.viewType === "kanban" ? false : true;
         this.listen = false;
 
@@ -26,6 +26,8 @@ export class AutoMeasureWidget extends RemoteMeasureOwl {
         // Hooks can not be overwrited, so we use the original methods in super class
         // if we declare the hooks in the subclass, they will be executed after the superclass
 
+        // PArece que se llama en último luga,r, al refrescar se llama al setup del nuevo
+        // y termina en onWillunmount del anterior, por lo que no puedo hacer la desconexión       
         onWillUnmount(() => {
             console.log("### 2 onWillUnmount() ###");
             
@@ -92,23 +94,23 @@ export class AutoMeasureWidget extends RemoteMeasureOwl {
         let move_id = this.props.record.data.id
         console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!Creo operación!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
         debugger;
-        await this.orm.call("stock.move", "set_auto_weight", [move_id, this.value]);
-        debugger;
         this.measureService.bus.off("stableMeasure", this, this.onStableMeasure);
         this.measureService.bus.off("unstableMeasure", this, this.onUnstableMeasure);
-        this.measureService.disconnect();
+        this.measureService.disconnect();  // Disconnect the websocket, if not error
+        await this.orm.call("stock.move", "set_auto_weight", [move_id, this.value]);
+        debugger;
         // this.env.model.actionService.doAction("reload_context");
         // await this.env.model.actionService.switchView('form')
-        await this.env.model.actionService.doAction({
+        this.env.model.actionService.doAction({
             type: 'ir.actions.client',
             tag: 'soft_reload',
         });
+        // await this.env.model.root.load();
         // this.measureService.connect(this.host, this.connection_mode, this.protocol);
         // this.measureService.bus.off("stableMeasure", this, this.onStableMeasure);
         // this.measureService.bus.off("unstableMeasure", this, this.onUnstableMeasure);
         // console.log("~~~~~~~~~~~~~~~~~~~REloades~~~~~~~~~~~~~~~~~~~~~~~")
         // console.log(this.measureService.stocket)
-        // await this.env.model.root.load();
     }
 
     // _connect_to_websockets2() {
