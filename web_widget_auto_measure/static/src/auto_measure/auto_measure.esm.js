@@ -15,6 +15,7 @@ export class AutoMeasureWidget extends RemoteMeasureOwl {
         this.value = this.props.value;
         // this.amount = this.props.value;
         this.showWidget = this.env.config.viewType === "kanban" ? false : true;
+        this.listen = false;
 
         
         // this.reconnectionDelay = 1000;  // Inicialmente 5 segundos
@@ -30,6 +31,7 @@ export class AutoMeasureWidget extends RemoteMeasureOwl {
             
             this.measureService.bus.off("stableMeasure", this, this.onStableMeasure);
             this.measureService.bus.off("unstableMeasure", this, this.onUnstableMeasure);
+            this.listen = false;
             // !! El disconect provoca que no se vuelva a montar
             // if (this.measureService.isConnected()) {
             //     this.measureService.disconnect();
@@ -54,11 +56,12 @@ export class AutoMeasureWidget extends RemoteMeasureOwl {
             //NEW IMPLEMENTATION
             console.warn("Intento conectar------------------")
             this.measureService.connect(this.host, this.connection_mode, this.protocol);
-            console.log("Is connected: ", this.measureService.isConnected());
-            this.measureService.bus.off("stableMeasure", this, this.onStableMeasure);
-            this.measureService.bus.off("unstableMeasure", this, this.onUnstableMeasure);
+            console.log("Is connected: ", this.measureService.isConnected());    
+        }
+        if (this.measureService.isConnected() && !this.listen) {
             this.measureService.bus.on("stableMeasure", this, this.onStableMeasure);
             this.measureService.bus.on("unstableMeasure", this, this.onUnstableMeasure);
+            this.listen = true;
         }
     }
 
