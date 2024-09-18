@@ -21,6 +21,7 @@ const nextState = {
 export class RemoteMeasureOwl extends FloatField {
     setup() {
         this.orm = useService("orm");
+        this.measureService = useService("measureReader");
         this.notification = useService("notification");
         super.setup();
         this.state = useState({
@@ -49,6 +50,7 @@ export class RemoteMeasureOwl extends FloatField {
 
         onWillStart(async () => {
             await this.loadRemoteDeviceData();
+
         });
 
         onMounted(() => {
@@ -58,9 +60,12 @@ export class RemoteMeasureOwl extends FloatField {
         });
 
         onWillUnmount(() => {
-            this._closeSocket();
+            // todo revisar
+            // this._closeSocket();
+            this.disconnectFromService()
         });
     }
+
 
     setRemoteDeviceData(deviceData){
         this.remote_device_data = deviceData;
@@ -93,6 +98,43 @@ export class RemoteMeasureOwl extends FloatField {
         console.log("@@@@@@@@@@@@@@@@@@@this@@@@@@@@@@@@@@@@@@@");
         console.log(this);
     }
+
+    connectToService(){
+        if(!this.measureService.isConnected()) {
+            this.measureService.connect(this.host,this.connection_mode, this.protocol);
+        }
+        this.measureService.bus.on("stableMeasure", this, this.onStableMeasure);
+        this.measureService.bus.on("unstableMeasure", this, this.onUnstableMeasure);
+    }
+    disconnectFromService(){
+        this.state.isMeasuring = false;
+        if(this.measureService.isConnected()) {
+            this.measureService.disconnect();
+        }
+        this.measureService.bus.off("stableMeasure", this, this.onStableMeasure);
+        this.measureService.bus.off("unstableMeasure", this, this.onUnstableMeasure);
+    }
+
+    onStableMeasure(value){
+        console.log("*** RECIBIDA MEDICION ESTABLE ***");
+        
+        this._stableMeasure();
+        // this._closeSocket();
+        this.disconnectFromService()
+        this._awaitingMeasure();
+        this._recordMeasure(value);
+    }
+
+    onUnstableMeasure(value){
+        console.log("*** RECIBIDA MEDICION INESTABLE ***");
+        this._unstableMeasure();
+
+        this.state.icon = this._nextStateIcon(this.state.icon);
+        this.amount = value;
+        this._setMeasure();
+        this._recordMeasure(value);
+    }
+
 
     _connect_to_websockets() {
         console.log("**** _connect_to_websockets() ****");
@@ -261,6 +303,8 @@ export class RemoteMeasureOwl extends FloatField {
         this.start_add = false;
     }
 
+
+
     measure(){
         console.log("**** measure() ****");
         if (this.props.readonly) {
@@ -268,12 +312,15 @@ export class RemoteMeasureOwl extends FloatField {
         }
         this.state.isMeasuring = true;
         this.state.buttonClass = "btn-secondary";
-        this[`_connect_to_${this.connection_mode}`]();
+        this.connectToService()
+        // this[`_connect_to_${this.connection_mode}`]();
+
     }
 
     measure_stop() {
         console.log("**** measure_stop() ****");
-        this._closeSocket();
+        // this._closeSocket();
+        this.disconnectFromService()
         this.stop = true;
         this._awaitingMeasure();
         this.state.isMeasuring = false;
@@ -292,7 +339,9 @@ export class RemoteMeasureOwl extends FloatField {
         // this.$start_measure_add.addClass("d-none");
         // this.$stop_measure.removeClass("d-none");
         // this.$icon = this.$stop_measure.find("i");
-        this[`_connect_to_${this.connection_mode}`]();
+        
+        //  this[`_connect_to_${this.connection_mode}`]();
+        this.connectToService();
     }
     
     // Dummy function to simulate v15. ev.preventDefault is on the template
@@ -300,6 +349,7 @@ export class RemoteMeasureOwl extends FloatField {
     _onValidateMeasure() {
         console.log("**** _onValidateMeasure() ****");
         this.measure_stop()
+        
         
     }
 }
