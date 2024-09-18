@@ -93,12 +93,10 @@ export class AutoMeasureWidget extends RemoteMeasureOwl {
         this.last_weight = this.amount;
         let move_id = this.props.record.data.id
         console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!Creo operación!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
-        debugger;
         this.measureService.bus.off("stableMeasure", this, this.onStableMeasure);
         this.measureService.bus.off("unstableMeasure", this, this.onUnstableMeasure);
         this.measureService.disconnect();  // Disconnect the websocket, if not error
         await this.orm.call("stock.move", "set_auto_weight", [move_id, this.value]);
-        debugger;
         // this.env.model.actionService.doAction("reload_context");
         // await this.env.model.actionService.switchView('form')
         this.env.model.actionService.doAction({
