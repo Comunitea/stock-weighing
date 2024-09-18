@@ -50,9 +50,7 @@ export class RemoteMeasureOwl extends FloatField {
 
         onWillStart(async () => {
             await this.loadRemoteDeviceData();
-            if(!this.measureService.isConnected()) {
-                this.measureService.connect(this.host,this.connection_mode, this.protocol);
-            }
+
         });
 
         onMounted(() => {
@@ -64,7 +62,7 @@ export class RemoteMeasureOwl extends FloatField {
         onWillUnmount(() => {
             // todo revisar
             // this._closeSocket();
-            this.removeListeners();
+            this.disconnectFromService()
         });
     }
 
@@ -101,12 +99,18 @@ export class RemoteMeasureOwl extends FloatField {
         console.log(this);
     }
 
-    setListeners(){
+    connectToService(){
+        if(!this.measureService.isConnected()) {
+            this.measureService.connect(this.host,this.connection_mode, this.protocol);
+        }
         this.measureService.bus.on("stableMeasure", this, this.onStableMeasure);
         this.measureService.bus.on("unstableMeasure", this, this.onUnstableMeasure);
-        
     }
-    removeListeners(){
+    disconnectFromService(){
+        this.state.isMeasuring = false;
+        if(this.measureService.isConnected()) {
+            this.measureService.disconnect();
+        }
         this.measureService.bus.off("stableMeasure", this, this.onStableMeasure);
         this.measureService.bus.off("unstableMeasure", this, this.onUnstableMeasure);
     }
@@ -116,7 +120,7 @@ export class RemoteMeasureOwl extends FloatField {
         
         this._stableMeasure();
         // this._closeSocket();
-        this.removeListeners();
+        this.disconnectFromService()
         this._awaitingMeasure();
         this._recordMeasure(value);
     }
@@ -308,7 +312,7 @@ export class RemoteMeasureOwl extends FloatField {
         }
         this.state.isMeasuring = true;
         this.state.buttonClass = "btn-secondary";
-        this.setListeners();
+        this.connectToService()
         // this[`_connect_to_${this.connection_mode}`]();
 
     }
@@ -316,7 +320,7 @@ export class RemoteMeasureOwl extends FloatField {
     measure_stop() {
         console.log("**** measure_stop() ****");
         // this._closeSocket();
-        this.removeListeners()
+        this.disconnectFromService()
         this.stop = true;
         this._awaitingMeasure();
         this.state.isMeasuring = false;
@@ -336,7 +340,8 @@ export class RemoteMeasureOwl extends FloatField {
         // this.$stop_measure.removeClass("d-none");
         // this.$icon = this.$stop_measure.find("i");
         
-         this[`_connect_to_${this.connection_mode}`]();
+        //  this[`_connect_to_${this.connection_mode}`]();
+        this.connectToService();
     }
     
     // Dummy function to simulate v15. ev.preventDefault is on the template
