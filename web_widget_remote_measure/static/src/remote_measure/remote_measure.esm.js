@@ -62,6 +62,7 @@ export class RemoteMeasureOwl extends FloatField {
         });
 
         onWillUnmount(() => {
+            // todo revisar
             // this._closeSocket();
             this.removeListeners();
         });
