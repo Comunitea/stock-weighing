@@ -1,8 +1,8 @@
-# Copyright 2023 Tecnativa - David Vidal
+# Copyright 2024 Comunitea - Javier Colmenero Fernández
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 {
     "name": "Web Widget auto mesure",
-    "summary": "Allows to automatic open the measure wizard when the weighing device is free and gets a weight",
+    "summary": "Allows to automatic create stock move lines in wheighig view when a change in measure from zero is taken",
     "version": "16.0.1.0.0",
     "author": "Comunitea, Odoo Community Association (OCA)",
     "website": "https://github.com/OCA/stock-weighing",

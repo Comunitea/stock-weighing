@@ -4,13 +4,16 @@ const { EventBus } = owl;
 
 
 export class MeasureReader {
-    constructor() {
+    constructor(env, notification) {
         this.name = "soylaclase"
         this.bus = new EventBus();
         this.socket = null;
         this.host = null;
         this.connection_mode = null;
         this.protocol = null;
+        // Using Service dependencies:
+        this.notificationService = notification;
+        this.env = env;
     }
 
     connect(host, connection_mode, protocol) {
@@ -87,6 +90,11 @@ export class MeasureReader {
 
         this.socket.onerror = () => {
             this.bus.trigger("error", { message: "Could not connect to WebSocket" });
+            this.notificationService.add(
+                this.env._t("Could not conect to wenSocket"), 
+                {
+                    type: "danger",
+                });
         };
     }
 
@@ -137,9 +145,10 @@ export class MeasureReader {
 }
 
 export const MeasureReaderService = {
-    start(env) {
+    dependencies: ["notification"],
+    start(env, { notification }) {
         console.warn("[[[[[[[[[[[[Starting MeasureReaderService]]]]]]]]]]]]]]");
-        return new MeasureReader();
+        return new MeasureReader(env, notification);
     }
 };
 
