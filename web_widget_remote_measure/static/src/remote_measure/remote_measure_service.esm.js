@@ -104,44 +104,6 @@ export class MeasureReader {
             value: parseFloat(msg.slice(2, 10)),
         };
     }
-
-    _proccess_msg_sscar(msg) {
-        const noIDPattern = /^([+-])\s*(\d+(\.\d{1,3})?)\r$/;
-        const withIDPattern = /^(\d{2}):\s*([+-])\s*(\d+(\.\d{1,3})?)\r$/;
-
-        let result = {};
-
-        // Check for message without ID
-        let match = noIDPattern.exec(msg);
-        if (match) {
-            const sign = match[1];
-            const weight = match[2];
-            const read_weight = parseFloat(weight);
-            result = {
-                // stable: sign !== '-',
-                stable: this.last_weight === read_weight,
-                value: read_weight
-            };
-            this.last_weight = read_weight;
-        } else {
-            // Check for message with ID
-            match = withIDPattern.exec(msg);
-            if (match) {
-                const id = match[1];
-                const sign = match[2];
-                const weight = match[3];
-                result = {
-                    id: id,
-                    stable: sign !== '-',
-                    value: parseFloat(weight)
-                };
-            }
-        }
-
-        return result;
-    }
-
-
 }
 
 export const MeasureReaderService = {
