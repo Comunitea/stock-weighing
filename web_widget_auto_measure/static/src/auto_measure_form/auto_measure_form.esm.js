@@ -16,6 +16,8 @@ const {
     onMounted, onWillUnmount, onWillDestroy, useState } = owl;
 
 
+
+
 export class AutoMeasureFormControlPanel extends ControlPanel {
     setup(){
         console.log("---------SEtup---------------")
@@ -28,8 +30,19 @@ export class AutoMeasureFormControlPanel extends ControlPanel {
         this.remote_device_data = {}
         this.listen = false;
         this.oldValue = 0.00;
+        this.uom_display_name = "--"
+        this.isMeasureStable = false;
+        this.initializing = true;
+        this.weighing_statuses = {
+            initializing : 'Initializing',
+            free:"Free",
+            stable : "Weighed",
+            unstable: "Weighing",
+            disconnected: "Disconnected",
+        };
         this.state = useState({
-            measure_amount: 0
+            measure_amount: 0,  
+            weighing_status: this.weighing_statuses.initializing,
         });
         
         onWillStart(async () => {
@@ -116,29 +129,45 @@ export class AutoMeasureFormControlPanel extends ControlPanel {
         this.protocol = this.remote_device_data && this.remote_device_data.protocol;
         this.connection_mode =
         this.remote_device_data && this.remote_device_data.connection_mode;
+        this.uom_display_name = uomData.display_name
     }
+
     onStableMeasure(value) {
         console.log("-------- onStableMeasure() ------------, Value: ", value);
         this.state.measure_amount = value;
+        this.state.weighing_status = this.weighing_statuses.stable;
         let oldValue = this.oldValue;
 
         console.log("oldValue: ", oldValue , "value: ", value);
-        if (oldValue === 0 && value > 0) {
-            
+
+
+
+        if (!this.initializing && value == 0) {
+            this.state.weighing_status = this.weighing_statuses.free;
+        }
+
+        if (!this.initializing && oldValue === 0 && value > 0) {
             this.doAutoOperation();
             
         }
+
+        if (this.initializing) {
+            // this.state.weighing_status = this.weighing_statuses.initializing;
+            this.initializing = false;
+        }
+
         this.oldValue = value;
     }
     onUnstableMeasure(value) {
         console.log("### onUnstableMeasure() ###: ", value);
+        this.state.weighing_status = this.weighing_statuses.unstable;
         this.state.measure_amount = value;
 
     }
     async doAutoOperation() {
         let move_id = this.moveId
         console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!Creo operación!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
-        await this.orm.call("stock.move", "set_auto_weight", [move_id, this.value]);
+        await this.orm.call("stock.move", "set_auto_weight", [move_id, this.state.measure_amount]);
         await this.reloadView();
     }
 }
