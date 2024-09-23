@@ -6,8 +6,11 @@ console.log('DEBERIA SER EL 3')
 
 
 patch(RemoteMeasureFormOwl.prototype, "RemoteMeasureFormOwl_BUTTONS", {
-     // TODO: Put this in form widget. Load orderd of assets is not controlled
-     _onClickButtonSscar(ev){
+    setup(){
+        this._super();
+        this.pendingCommand = null;
+    },
+    _onClickButtonSscar(ev){
         console.log("**** uu PATCHEEED BUTTONS() ****");
         ev.preventDefault();
         const button_name = ev.currentTarget.dataset.name;
@@ -25,43 +28,18 @@ patch(RemoteMeasureFormOwl.prototype, "RemoteMeasureFormOwl_BUTTONS", {
         } else if (button_name === 'Z') {
             button_command = 'C';
         }
-        try {
-            // Inicializa la conexión WebSocket
-            this.socket = new WebSocket(this.host);
-    
-            // Define qué hacer cuando la conexión WebSocket se abra
-            this.socket.onopen = () => {
-                console.log('WebSocket connection opened.');
-    
-                // Formatea el comando con el texto del botón y un retorno de carro
-                const command = `${button_command}\r`;
-    
-                // Envía el comando al WebSocket
-                this.socket.send(command);
-                console.log(`Sent command: ${command}`);
-            };
-    
-            // Manejo de mensajes recibidos desde el WebSocket (opcional)
-            this.socket.onmessage = (event) => {
-                console.log('Message received from server:', event.data);
-            };
-    
-            // Manejo del cierre de la conexión WebSocket (opcional)
-            this.socket.onclose = (event) => {
-                console.log('WebSocket connection closed:', event);
-            };
-    
-            // Manejo de errores en la conexión WebSocket (opcional)
-            this.socket.onerror = (error) => {
-                console.error('WebSocket error:', error);
-            };
-    
-        } catch (error) {
-            // Manejo de errores en la conexión WebSocket
-            if (error.code === 18) {
-                return;
-            }
-            throw error;
+        this.pendingCommand = button_command;
+        if (!this.measureService.isConnected()) {
+            this.measureService.connect(this.host,this.connection_mode, this.protocol);
+            this.measureService.bus.on("conected", this, this._onConnected);
         }
-    }
+    },
+    _onConnected(){
+        if (this.pendingCommand) {
+            this.measureService.sendCommand(this.pendingCommand);  // Enviar el comando pendiente
+            this.pendingCommand = null;  // Limpiar la variable del comando pendiente
+            this.measureService.bus.off("conected", this, this._onConnected); 
+            this.measureService.disconnect() // Desuscribirse del evento
+        }
+    },
 });

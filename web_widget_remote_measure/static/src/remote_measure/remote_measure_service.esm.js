@@ -60,6 +60,13 @@ export class MeasureReader {
 
         var streamSuccessCounter = 10;
 
+        // Emitir evento cuando la conexión esté abierta
+        this.socket.onopen = () => {
+            console.info("WebSocket connection established");
+            // Emitimos el evento "connection_opened" en el bus
+            this.bus.trigger("conected");
+        };
+
         this.socket.onmessage = async (msg) => {
             const data = await msg.data.text();
             if (!this.protocol){
@@ -87,7 +94,10 @@ export class MeasureReader {
                 --streamSuccessCounter;
             }
         };
-
+        this.socket.onclose = () => {
+            this.bus.trigger("disconnected");
+            this.socket = null;
+        }
         this.socket.onerror = () => {
             this.bus.trigger("error", { message: "Could not connect to WebSocket" });
             this.notificationService.add(
