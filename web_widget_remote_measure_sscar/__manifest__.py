@@ -16,8 +16,6 @@
     "assets": {
         "web.assets_backend": [
             'web_widget_remote_measure_sscar/static/src/**/*.esm.js',
-            'web_widget_remote_measure_sscar/static/src/**/*.scss',
-            'web_widget_remote_measure_sscar/static/src/**/*.xml',
         ],
         # "web.assets_backend": [
             
