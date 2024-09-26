@@ -14,6 +14,7 @@ export class MeasureReader {
         // Using Service dependencies:
         this.notificationService = notification;
         this.env = env;
+        this.streamSuccessCounter = 50;
     }
 
     connect(host, connection_mode, protocol) {
@@ -58,7 +59,7 @@ export class MeasureReader {
             throw error;
         }
 
-        var streamSuccessCounter = 10;
+        // var streamSuccessCounter = 50;
 
         // Emitir evento cuando la conexión esté abierta
         this.socket.onopen = () => {
@@ -80,18 +81,19 @@ export class MeasureReader {
 
             const processedData = this[`_proccess_msg_${this.protocol}`](data);
             if (!processedData.stable) {
-                streamSuccessCounter = 5;
+                this.streamSuccessCounter = 50;
             }
-
-            if (processedData.stable && !streamSuccessCounter) {
+            if (processedData.stable && !this.streamSuccessCounter) {
                 this.bus.trigger("stableMeasure", processedData.value);
                 return;
             }
-
+            
             this.bus.trigger("unstableMeasure", processedData.value);
+            
 
-            if (streamSuccessCounter) {
-                --streamSuccessCounter;
+
+            if (this.streamSuccessCounter) {
+                this.streamSuccessCounter = this.streamSuccessCounter - 1
             }
         };
         this.socket.onclose = () => {

@@ -6,7 +6,15 @@ import {patch} from "@web/core/utils/patch";
 
 // pATCHING MeasureReader Service to add a method thar process sscar protocol.
 patch(MeasureReader.prototype,"MeasureReader_add_SSCAR", {
+    constructor(env, notification) {
+        this._super(env, notification);
+        this.last_weight = 0;
+    },
     _proccess_msg_sscar(msg) {
+        /** 
+         * Considero estable si lee dos iguales aeguidas.
+         * Si lo pongo estable con el signo +, funciona mal el widget auto
+         */
         const noIDPattern = /^([+-])\s*(\d+(\.\d{1,3})?)\r$/;
         const withIDPattern = /^(\d{2}):\s*([+-])\s*(\d+(\.\d{1,3})?)\r$/;
 
@@ -33,7 +41,8 @@ patch(MeasureReader.prototype,"MeasureReader_add_SSCAR", {
                 const weight = match[3];
                 result = {
                     id: id,
-                    stable: sign !== '-',
+                    // stable: sign !== '-',
+                    stable: this.last_weight === read_weight,
                     value: parseFloat(weight)
                 };
             }
