@@ -14,11 +14,20 @@ patch(MeasureReader.prototype,"MeasureReader_add_SSCAR", {
         /** 
          * Considero estable si lee dos iguales aeguidas.
          * Si lo pongo estable con el signo +, funciona mal el widget auto
+         * 
+         * En la doc aparece que se permite el peso negativo y este aparecerá incicado por el símbolo '-' precediendo el valor.
+         * Luego también se indica que "Si el peso no supera el mínimo permitido o es negativo y OIML se devolvera '      '"
+         * Ninguna de las dos premisas anteriores se cumple, en aso de negativo se devuelve '______'.
+         * En caso de no poder procesarse el valor devuelto se devolverá un diccionario vacío.
          */
+        
         const noIDPattern = /^([+-])\s*(\d+(\.\d{1,3})?)\r$/;
         const withIDPattern = /^(\d{2}):\s*([+-])\s*(\d+(\.\d{1,3})?)\r$/;
 
-        let result = {};
+        let result = {
+            stable:true,
+            value: -9.999,
+        };
 
         // Check for message without ID
         let match = noIDPattern.exec(msg);
@@ -52,7 +61,6 @@ patch(MeasureReader.prototype,"MeasureReader_add_SSCAR", {
     },
     // Método para enviar comandos SSCAR a través del WebSocket existente
     sendCommand(command) {
-        debugger;
         if (!this.isConnected()) {
             console.error("WebSocket is not connected.");
             return;
