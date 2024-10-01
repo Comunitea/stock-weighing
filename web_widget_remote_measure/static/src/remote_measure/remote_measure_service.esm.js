@@ -59,7 +59,7 @@ export class MeasureReader {
             throw error;
         }
 
-        // var streamSuccessCounter = 50;
+        this.streamSuccessCounter = 50;
 
         // Emitir evento cuando la conexión esté abierta
         this.socket.onopen = () => {
