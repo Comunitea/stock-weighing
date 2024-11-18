@@ -103,7 +103,7 @@ export class MeasureReader {
         this.socket.onerror = () => {
             this.bus.trigger("error", { message: "Could not connect to WebSocket" });
             this.notificationService.add(
-                this.env._t("Could not conect to wenSocket"), 
+                this.env._t("Could not conect to webSocket"), 
                 {
                     type: "danger",
                 });
