@@ -106,7 +106,7 @@
                             type="number"
                             step="0.1"
                             inputmode="decimal"
-                            value="this.state.manual_tare"
+                            t-attf-value="{{state.manual_tare}}"
                             class="form-control text-center"
                             aria-label="Manual tare"
                             t-on-change="_onChangeInputTare"

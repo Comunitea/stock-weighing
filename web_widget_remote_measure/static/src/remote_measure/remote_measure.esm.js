@@ -45,21 +45,26 @@ export class RemoteMeasureOwl extends FloatField {
         this.uom = this.props.record.data[this.props.uom_field];
         this.allow_additive_measure = this.props.allow_additive_measure;
 
-        onWillStart(async () => {
-            await this.loadRemoteDeviceData();
-
-        });
-
-        onMounted(() => {
-            if (this.remote_device_data && this.remote_device_data.instant_read) {
-                this.measure();
-            }
-        });
-
-        onWillUnmount(() => {
-            this.disconnectFromService()
-        });
+        // Linked hooks to methods in order to be able to extend them easily
+        onWillStart(this.willStart);
+        onMounted(this.mounted);
+        onWillUnmount(this.willUnmount);
     }
+
+    async willStart(){
+        await this.loadRemoteDeviceData();
+    }
+
+    mounted(){
+        if (this.remote_device_data && this.remote_device_data.instant_read) {
+            this.measure();
+        }
+    }
+
+    willUnmount(){
+        this.disconnectFromService()
+    }
+
 
     setRemoteDeviceData(deviceData){
         this.remote_device_data = deviceData;
