@@ -17,48 +17,28 @@ export class MeasureReader {
         this.streamSuccessCounter = 50;
     }
 
-    async testConnection(host, connection_mode, protocol) {
-        return new Promise((resolve) => {
-            try {
-                debugger;
-                // Intentar conectar usando el método connect existente
-                this.connect(host, connection_mode, protocol);
-
-                // Manejador temporal para conexión exitosa
-                const onConnected = () => {
-                    console.info("Test connection successful");
-                    this.bus.off("connected", onConnected);
-                    this.bus.off("error", onError);
-                    this.disconnect();
-                    resolve(true);
-                };
-
-                // Manejador temporal para error de conexión
-                const onError = () => {
-                    console.error("Test connection failed");
-                    this.bus.off("connected", onConnected);
-                    this.bus.off("error", onError);
-                    this.disconnect();
-                    resolve(false);
-                };
-
-                // Suscribirse a eventos temporalmente
-                this.bus.on("connected", onConnected);
-                this.bus.on("error", onError);
-
-                // Timeout de seguridad para evitar esperas infinitas
-                setTimeout(() => {
-                    this.bus.off("connected", onConnected);
-                    this.bus.off("error", onError);
-                    this.disconnect();
-                    resolve(false);
-                }, 5000);
-
-            } catch (error) {
-                console.error("Test connection error:", error);
-                resolve(false);
-            }
-        });
+    async testConnectionWebSocket(host) {
+        try {
+            const socket = new WebSocket(this.host);
+            const result = await Promise.race([
+                new Promise((resolve, reject) => {
+                    socket.onopen = () => {
+                        socket.close();
+                        resolve(true);
+                    };
+                    socket.onerror = (error) => {
+                        socket.close();
+                        reject(error);
+                    };
+                }),
+                new Promise((_, reject) => {
+                    setTimeout(() => reject(new Error('Connection timeout')), 1000);
+                })
+            ]);
+            return result;
+        } catch (error) {
+            return false;
+        }
     }
 
     connect(host, connection_mode, protocol) {
