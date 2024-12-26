@@ -17,6 +17,50 @@ export class MeasureReader {
         this.streamSuccessCounter = 50;
     }
 
+    async testConnection(host, connection_mode, protocol) {
+        return new Promise((resolve) => {
+            try {
+                debugger;
+                // Intentar conectar usando el método connect existente
+                this.connect(host, connection_mode, protocol);
+
+                // Manejador temporal para conexión exitosa
+                const onConnected = () => {
+                    console.info("Test connection successful");
+                    this.bus.off("connected", onConnected);
+                    this.bus.off("error", onError);
+                    this.disconnect();
+                    resolve(true);
+                };
+
+                // Manejador temporal para error de conexión
+                const onError = () => {
+                    console.error("Test connection failed");
+                    this.bus.off("connected", onConnected);
+                    this.bus.off("error", onError);
+                    this.disconnect();
+                    resolve(false);
+                };
+
+                // Suscribirse a eventos temporalmente
+                this.bus.on("connected", onConnected);
+                this.bus.on("error", onError);
+
+                // Timeout de seguridad para evitar esperas infinitas
+                setTimeout(() => {
+                    this.bus.off("connected", onConnected);
+                    this.bus.off("error", onError);
+                    this.disconnect();
+                    resolve(false);
+                }, 5000);
+
+            } catch (error) {
+                console.error("Test connection error:", error);
+                resolve(false);
+            }
+        });
+    }
+
     connect(host, connection_mode, protocol) {
         this.host = host;
         this.connection_mode = connection_mode;
