@@ -19,7 +19,7 @@ export class MeasureReader {
 
     async testConnectionWebSocket(host) {
         try {
-            const socket = new WebSocket(this.host);
+            const socket = new WebSocket(host);
             const result = await Promise.race([
                 new Promise((resolve, reject) => {
                     socket.onopen = () => {
