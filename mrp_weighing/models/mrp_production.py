@@ -19,6 +19,7 @@ class MrpProduction(models.Model):
             mrp_production.has_weighing_operations = (
                 mrp_production.move_finished_ids.filtered("has_weight")
             )
+
     @api.depends("move_raw_ids")
     def _compute_has_raw_weighing_operations(self):
         for mrp_production in self:
@@ -39,9 +40,10 @@ class MrpProduction(models.Model):
             **ast.literal_eval(action["context"]),
             group_by=["production_id"]
         )
+        if self.lot_producing_id:
+            action["context"]["default_lot_id"] = self.lot_producing_id.id
         return action
-    
-    
+
     def action_raw_weighing_operations(self):
         """Weighing operations for this production order"""
         action = self.env["ir.actions.actions"]._for_xml_id(
