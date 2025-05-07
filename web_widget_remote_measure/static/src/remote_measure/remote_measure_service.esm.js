@@ -54,11 +54,19 @@ export class MeasureReader {
             return;
         }
 
-        this.socket.close();
+        this.socket.onopen = null;
+        this.socket.onmessage = null;
+        this.socket.onerror = null;
+        this.socket.onclose = null;
+        
+        try {
+            this.socket.close(1000, "Client closed");
+        } catch (e) {
+            console.warn("Error closing socket", e);
+        }
+        
         this.socket = null;
-        // this.host = null;
-        // this.connection_mode = null;
-        // this.protocol = null;
+        this.bus.trigger("disconnected");
     }
 
     isConnected() {
