@@ -13,7 +13,7 @@
                     string="Weight"
                     type="object"
                     class="oe_stat_button"
-                    icon="fa-thermometer-half"
+                    icon="fa-balance-scale"
                     attrs="{'invisible': ['|', '|', ('weighing_operations', '=', False), ('has_weighing_operations', '=', False), ('state', 'in', ['draft', 'cancel'])]}"
                 />
 
@@ -22,7 +22,7 @@
                 string="Weight Components"
                 type="object"
                 class="oe_stat_button"
-                icon="fa-thermometer-half"
+                icon="fa-balance-scale"
                 attrs="{'invisible': ['|', '|', ('weighing_operations', '=', False), ('has_raw_weighing_operations', '=', False), ('state', 'in', ['draft', 'cancel'])]}"
             />
             </div>

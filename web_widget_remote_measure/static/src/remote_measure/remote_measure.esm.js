@@ -10,11 +10,9 @@ const {onWillStart, onMounted, onWillUnmount, useState } = owl;
 console.log('DEBERIA SER EL 1')
 
 const nextState = {
-    "fa-thermometer-empty": "fa-thermometer-quarter",
-    "fa-thermometer-quarter": "fa-thermometer-half",
-    "fa-thermometer-half": "fa-thermometer-three-quarters",
-    "fa-thermometer-three-quarters": "fa-thermometer-full",
-    "fa-thermometer-full": "fa-thermometer-empty",
+    "fa-balance-scale": "fa-balance-scale-left",
+    "fa-balance-scale-left": "fa-balance-scale-right",
+    "fa-balance-scale-right": "fa-balance-scale",
 };
 
 export class RemoteMeasureOwl extends FloatField {
@@ -24,7 +22,7 @@ export class RemoteMeasureOwl extends FloatField {
         super.setup();
         this.state = useState({
             // amount: 0,
-            icon: "fa-thermometer-empty",
+            icon: "fa-balance-scale",
             isStable: false,
             isMeasuring: false,
             buttonClass: "btn-primary",
@@ -84,11 +82,11 @@ export class RemoteMeasureOwl extends FloatField {
             return;
         }
         const deviceId = userData.remote_measure_device_id[0];
-        const [deviceData] = await this.orm.read("remote.measure.device", [deviceId], []);   
+        const [deviceData] = await this.orm.read("remote.measure.device", [deviceId], []);
         const [uomData] = await this.orm.read("uom.uom", [deviceData.uom_id[0]], []);
-        
+
         this.setRemoteDeviceData(deviceData);
-        
+
         this.uom = uomData;
         this.uom_category = this.uom.category_id[0];
     }
@@ -230,12 +228,12 @@ export class RemoteMeasureOwl extends FloatField {
         this.start_add = true;
         this.connectToService();
     }
-    
+
     _onValidateMeasure() {
         console.log("**** _onValidateMeasure() ****");
         this.measure_stop()
-        
-        
+
+
     }
 }
 
