@@ -12,7 +12,7 @@
                     string="Weight"
                     type="object"
                     class="oe_stat_button"
-                    icon="fa-thermometer-half "
+                    icon="fa-balance-scale"
                     attrs="{'invisible': ['|', '|', ('weighing_operations', '=', False), ('has_weighing_operations', '=', False), ('state', 'in', ['draft', 'cancel'])]}"
                 />
             </div>
@@ -33,7 +33,7 @@
                         string="Weight"
                         type="object"
                         class="oe_highlight"
-                        icon="fa-thermometer-half "
+                        icon="fa-balance-scale"
                         attrs="{'invisible': ['|', '|', ('weighing_operations', '=', False), ('has_weighing_operations', '=', False), ('state', 'in', ['draft', 'cancel'])]}"
                     />
            </xpath>

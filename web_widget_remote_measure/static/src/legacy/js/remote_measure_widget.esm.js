@@ -49,7 +49,7 @@ export const RemoteMeasureMixin = {
             }
             throw error;
         }
-        var icon = "fa-thermometer-empty";
+        var icon = "fa-balance-scale";
         var stream_success_counter = 10;
         this.socket.onmessage = async (msg) => {
             console.log("****_connect_to_websockets/onmessage()****");
@@ -116,7 +116,7 @@ export const RemoteMeasureMixin = {
      * scale.
      */
     async _connect_to_tcp() {
-        var icon = "fa-thermometer-empty";
+        var icon = "fa-balance-scale";
         var stream_success_counter = 20;
         this._unstableMeasure();
         // Used to set the read interval if any

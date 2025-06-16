@@ -299,7 +299,7 @@
                     string="To weigh"
                     name="to_weigh"
                     domain="[('weighing_state', 'in', ['weighing', 'to_weigh'])]"
-                    context="{'shown_in_panel': {'icon': 'fa-thermometer'}}"
+                    context="{'shown_in_panel': {'icon': 'fa-balance-scale'}}"
                 />
             </filter>
             <filter name="today" position="before">
