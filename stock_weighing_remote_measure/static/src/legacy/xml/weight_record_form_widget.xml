@@ -45,19 +45,19 @@
                             t-att-data-tare="tare.tare"
                         >
                             -
-                        </btn>
+                        </button>
                         <button t-attf-class="btn btn-{{color}} disabled">
                             <t t-if="tare.name" t-out="tare.name" />
                             <t t-else="">
                                 <t t-out="tare.tare" /> <t t-out="uom_name" />
                             </t>
-                        </btn>
+                        </button>
                         <button
                             t-attf-class="btn btn-outline-{{color}}"
                             t-attf-data-tare="-{{tare.tare}}"
                         >
                             +
-                        </btn>
+                        </button>
                     </div>
                 </div>
                 <div class="col-12 pt-2 pl-0">
