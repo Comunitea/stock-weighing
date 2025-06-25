@@ -30,5 +30,5 @@ class WeighingWizard(models.TransientModel):
         elif self.stock_weighing_auto_package:
             self.selected_move_line_id.result_package_id = self.env[
                 "stock.quant.package"
-            ].create({})
+            ].create({'picking_type_id': self.selected_move_line_id.move_id.picking_type_id.id})
         return res
