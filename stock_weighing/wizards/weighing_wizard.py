@@ -33,7 +33,7 @@ class StockMoveWeightWizard(models.TransientModel):
     result_package_id = fields.Many2one(
         "stock.quant.package",
         "Destination Package",
-        domain="[('id', 'in', available_result_package_ids)]",
+        # domain="[('id', 'in', available_result_package_ids)]", No aporta nada actualmente porque no filtra nada y sólo encuentra 10 paquetes
         help="If set, the operations are packed into this package",
     )
 
