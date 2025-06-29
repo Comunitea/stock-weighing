@@ -105,8 +105,10 @@ class StockMoveWeightWizard(models.TransientModel):
             .with_context(**clean_context(self.env.context))
             .create(vals)
         )
+
+        res = self.record_weight()
         self._post_add_detailed_operation()
-        return self.record_weight()
+        return res
 
     def record_weight(self):
         """Register the operation weight"""
