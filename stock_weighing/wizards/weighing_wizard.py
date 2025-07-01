@@ -52,7 +52,6 @@ class StockMoveWeightWizard(models.TransientModel):
             wiz.available_lot_ids = self.env["stock.lot"].search(
                 [("product_id", "=", wiz.product_id.id)],
                 order="create_date desc",
-                limit=5,
             )
             # Add to available lots any lot coming in context as default key
             default_lot_id = self.env.context.get("default_lot_id", False)
