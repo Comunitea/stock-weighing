@@ -43,6 +43,13 @@
     &.o_kanban_grouped {
         flex-flow: row wrap;
         min-height: 50%;
+        
+        // Sobrescribir el comportamiento responsivo en dispositivos móviles
+        // para que la pda no se coma movimientos en un albaran granbde
+        @media (max-width: 767.98px) {
+            height: auto !important;
+        }
+        
         .o_kanban_group {
             width: 100%;
             min-width: 100%;  // Added to get full width
